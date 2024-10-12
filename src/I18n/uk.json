@@ -14,9 +14,9 @@
 		"item-generic": "Елемент{{number}}",
 		"label-callout": "Скопіювати як виноску",
 		"label-share": "Поширити...",
-		"label-share-description": "Поділіться цим посиланням з іншим користувачем Note Toolbar, щоб додати вашу панель до його сховища.",
+		"label-share-description": "Поділіться цим посиланням з іншим користувачем Note Toolbar, щоб додати Вашу панель до його сховища.",
 		"label-share-preview": "перегляд",
-		"title-share": "Поділитися панеллю: {{toolbar}}",
+		"title-share": "Поширення панелі: {{toolbar}}",
 		"button-copy-uri": "Копіювати URI",
 		"button-copy-uri-description": "Скопіюйте це посилання в буфер обміну",
 		"notice-completed": "Панель скопійовано до буфера обміну як виноску",
@@ -26,19 +26,19 @@
 		"label-vars-approve": "Замінити",
 		"label-vars-deny": "Залишити як є",
 		"warning-share-menu": "Ця панель посилається принаймні на одну іншу панель, яку одержувач не отримає.",
-		"error-share-length": "Деякі браузери можуть не завантажити URL-адреси з довжиною більше ніж 2048 символів."
+		"error-share-length": "Деякі браузери можуть не завантажити URL-адреси довжиною, більше ніж 2048 символів."
 	},
 	"import": {
 		"title-import": "Імпорт Note Toolbar: {{toolbar}}",
 		"title-import-into": "Імпортувати виноску до панелі: {{toolbar}}",
 		"label-import-confirmation": "Підтвердить, що ви бажаєте імпортувати цю панель:",
-		"label-import-into": "Вставте виноску Note Toolbar нижче, і ці елементи будуть імпортовані до цієї панелі.",
+		"label-import-into": "Вставте виноску Note Toolbar нижче для імпорту до цієї панелі.",
 		"label-import-into-help": "Заголовок виноски не потрібен, або буде проігнорований, якщо вказаний.",
 		"label-confirm": "Підтвердити",
 		"label-cancel": "Скасувати",
 		"option-create": "Створити Note Toolbar із виноски...",
 		"option-help": "Про виноски Note Toolbar",
-		"button-import-tooltip": "Імпортувати елементи з виноски",
+		"button-import-tooltip": "Імпортувати з виноски",
 		"error-invalid-uri-content": "Note Toolbar: схоже, з цим посиланням виникла проблема. Перевірте правильність URI або перегляньте посібник користувача.",
 		"errorlog-heading": "Помилки виявлені під час імпорту панелі:",
 		"errorlog-item": "Елемент {{number}}:",
@@ -49,7 +49,7 @@
 		"errorlog-menu-not-found": "Меню не знайдено: {{menu}}",
 		"placeholder-import-into": "> Markdown Виноски Note Toolbar...",
 		"warning-invalid-plugins": "Ця панель використовує додаток, який не встановлено, або вимкнуто:",
-		"warning-vars": "Ця панель використовує змінні, які ви можете редагувати для роботи з вашим сховищем."
+		"warning-vars": "Ця панель використовує змінні, які Ви можете редагувати для роботи з вашим сховищем."
 	},
 	"notice": {
 		"error-command-not-found": "Перевірте налаштування Note Toolbar або URI для цієї команди. Команду не знайдено: {{command}}",
@@ -78,7 +78,7 @@
 		"title-edit-toolbar": "Редагування панелі: {{toolbar}}",
 		"title-edit-toolbar_none": "Редагувати панель",
 		"delete-toolbar": {
-			"name": "Видалити панель",
+			"name": "Видалення панелі",
 			"description": "Цю дію не можна скасувати.",
 			"title": "Видалити панель: {{toolbar}}",
 			"button-delete": "Видалити...",
@@ -95,7 +95,7 @@
 			"option-folder-all": "всі теки",
 			"option-folder-root": "тільки коренева тека",
 			"option-folder-mappings": "Зіставленні теки",
-			"option-folder-mappings-description": "У нотатках з вказаних теках будуть автоматично відображатися панелі по створеним зіставленням. Пріоритет зверху вниз.",
+			"option-folder-mappings-description": "У нотатках з вказаних теках, будуть автоматично відображатися панелі по створеним зіставленням. Пріоритет зверху вниз.",
 			"option-folder-mappings-empty": "Натисніть на кнопку, щоб створити прив'язку.",
 			"placeholder-mapping-folder": "Тека",
 			"placeholder-mapping-toolbar": "Панель",
@@ -228,7 +228,7 @@
 		},
 		"position": {
 			"name": "Розташування",
-			"description": "Розташовуйте цю панель.",
+			"description": "Розташовання цієї панелі",
 			"option-mobile-help": "ℹ️ Панель доступна через Панель навігації.",
 			"option-fabl": "Плаваюча кнопка: ліворуч",
 			"option-fabr": "Плаваюча кнопка: праворуч",
@@ -240,7 +240,7 @@
 		"styles": {
 			"name": "Стилі",
 			"description": "Перелік стилів цієї панелі.",
-			"help": "Налаштуйте ще більше з додатком Style Settings.",
+			"help": "Налаштовуйте ще більше з додатком Style Settings.",
 			"option-autohide": "автоприховувати*",
 			"option-autohide-disclaimer": "Автоматичне приховування не поширюється на мобільні пристрої.",
 			"option-between": "інтервал між кнопками",
@@ -264,14 +264,14 @@
 			"option-sticky": "прикріпляти*",
 			"option-sticky-disclaimer": "Прикріплення не працює у режимі Читання.",
 			"option-wide": "ширина вікна*",
-			"option-wide-disclaimer": "Ширина редактора працює лише в тому випадку, якщо позиція верхньої панелі інструментів (фіксована).",
+			"option-wide-disclaimer": "Ширина редактора працює коли позиція панелі фіксована.",
 			"option-default-name": "За замовчуванням",
-			"option-default-description": "Всі платформи (до перевизначення).",
+			"option-default-description": "Застосовується до всіх платформ, якщо не перевизначено.",
 			"option-default-empty": "Не встановлено стандартних стилів.",
 			"option-mobile-name": "Мобільний 📱",
 			"option-mobile-description": "Замінити стилі за замовчуванням.",
-			"option-mobile-empty": "Не встановлено мобільних стилів. Використовуються стилі за замовчуванням.",
-			"style-tooltip-use-class": "Використовувати у Виносках або CSS: {{class}}",
+			"option-mobile-empty": "Не встановлено мобільних стилів. Діють типові стилі.",
+			"style-tooltip-use-class": "Використовувати у виносках або CSS: {{class}}",
 			"style-remove-tooltip": "Видалити"
 		},
 		"toolbar-suggest-modal": {
@@ -315,7 +315,7 @@
 	"toolbar": {
 		"button-floating-tooltip": "Відкрити Note Toolbar",
 		"menu-edit-toolbar": "Редагувати панель: {{toolbar}}...",
-		"menu-position-props": "Розташувати нижче властивостей",
+		"menu-position-props": "Розташувати під властивостями",
 		"menu-position-top": "Розміщати зверху (фіксовано)",
 		"menu-toolbar-settings": "Налаштування Note Toolbar..."
 	}
