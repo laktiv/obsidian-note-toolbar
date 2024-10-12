@@ -3,6 +3,7 @@ import { DEFAULT_ITEM_VISIBILITY_SETTINGS, DEFAULT_STYLE_OPTIONS, ItemType, MOBI
 import { debugLog, getUUID, replaceVars, toolbarHasVars } from "./Utils";
 import { Command, getIcon, Notice, TFile, TFolder } from "obsidian";
 import { confirmWithModal } from "Settings/UI/Modals/ConfirmModal";
+import { learnMoreFr } from "Settings/UI/Utils/SettingsUIUtils";
 
 const toIconizeFormat = (s: string) => 
     `:Li${s.replace(/^lucide-/, '')
@@ -50,7 +51,7 @@ export async function exportToCallout(plugin: NoteToolbarPlugin, toolbar: Toolba
     if (!forShareUri && toolbarHasVars(toolbar)) {
         options.resolveVars = await confirmWithModal(plugin.app, { 
             title: t('export.confirm-vars-title'),
-            questionLabel: t('export.confirm-vars-question'),
+            questionFragment: learnMoreFr(t('export.confirm-vars-question'), 'Variables'),
             approveLabel: t('export.label-vars-approve'),
             denyLabel: t('export.label-vars-deny')
         });
@@ -204,11 +205,12 @@ export async function importFromCallout(
     fromShareUri: boolean = false
 ): Promise<ToolbarSettings> {
 
-    debugLog('importFromCallout()', callout);
-
     const lines = callout.trim().split('\n');
     const isToolbarProvided = toolbar ? true : false;
     var errorLog = '';
+
+    // get the active file to provide context
+    let activeFile = plugin.app.workspace.getActiveFile();
 
     // create a new toolbar to return, if one wasn't provided
     if (!toolbar) {
@@ -230,10 +232,10 @@ export async function importFromCallout(
     if (lines[0].includes('[!note-toolbar')) {
         // don't create a toolbar if we're importing into one
         if (!isToolbarProvided) {
-            const metadataMatch = lines[0].match(/\[!(.*?)\|\s*(.*?)\](.*)/);
+            const metadataMatch = lines[0].match(/\[!note-toolbar\|?\s*([^\]]*)\](.*)/);
             if (metadataMatch) {
-                let styles = metadataMatch[2].split(/[^a-zA-Z0-9]+/);
-                let name = metadataMatch[3].trim();
+                let styles = metadataMatch[1].split(/[^a-zA-Z0-9]+/);
+                let name = metadataMatch[2].trim();
     
                 const DEFAULT_STYLE_KEYS = DEFAULT_STYLE_OPTIONS.map(style => Object.keys(style)[0]);
                 const MOBILE_STYLE_KEYS = MOBILE_STYLE_OPTIONS.map(style => Object.keys(style)[0]);
@@ -241,7 +243,7 @@ export async function importFromCallout(
                     DEFAULT_STYLE_KEYS.includes(style) || MOBILE_STYLE_KEYS.includes(style)
                 );
                 const invalidStyles = styles.filter(style => 
-                    !DEFAULT_STYLE_KEYS.includes(style) && !MOBILE_STYLE_KEYS.includes(style)
+                    style && !DEFAULT_STYLE_KEYS.includes(style) && !MOBILE_STYLE_KEYS.includes(style)
                 );
     
                 debugLog('• name?', name);
@@ -251,7 +253,6 @@ export async function importFromCallout(
                     errorLog += `${t('import.errorlog-invalid-styles', { styles: invalidStyles })}\n`;
                 }
             
-                // TODO: if there are styles and toolbar is provided, prompt to ignore styles
                 toolbar.name = plugin.settingsManager.getUniqueToolbarName(name ? name : t('setting.toolbars.imported-tbar-name'), false);
                 toolbar.defaultStyles = validStyles;
             }
@@ -300,6 +301,11 @@ export async function importFromCallout(
                     itemType = ItemType.File;
                     label = linkMatch[4] || linkMatch[3];
                     link = linkMatch[3];
+                    // resolve the filename provided to one in this vault, if it exists
+                    if (activeFile) {
+                        const linkFile = plugin.app.metadataCache.getFirstLinkpathDest(link, activeFile?.path);
+                        link = linkFile ? linkFile.path : link;
+                    }
                 }
     
                 const iconMatch = label?.match(/(:Li\w+:)/);
@@ -308,7 +314,7 @@ export async function importFromCallout(
                     const iconName = label?.match(/:Li(\w+):/);
                     if (iconName) {
                         let iconImported = iconName[1]
-                            .replace(/([a-z])([A-Z])/g, '$1-$2')
+                            .replace(/([a-z])([A-Z0-9])/g, '$1-$2')
                             .replace(/([A-Z])([A-Z][a-z])/g, '$1-$2')
                             .toLowerCase();
                         // check the Lucide set first, and then the icon's name by itself (for custom icons, like Templater's)

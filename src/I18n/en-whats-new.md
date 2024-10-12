@@ -1,46 +1,88 @@
-# v1.14 - Share your toolbars with other users!
+Here's what's new in v1.14:
 
-## Copy toolbars to markdown
+# Share toolbars with users
 
-Right-click on a toolbar to see the _Copy to markdown_ option, or use the export icon in the toolbar’s settings, just above the item list.
+Share toolbars with a link that you can send to other users.
 
-- Markdown will be copied to the clipboard.
-- Icons are output only if the [Iconize](https://github.com/FlorianWoelki/obsidian-iconize) plugin is installed and enabled.
-- Be sure to read about [how exporting works](https://github.com/chrisgurney/obsidian-note-toolbar/wiki/Importing-and-exporting) and what's supported.
+- Right-click on a toolbar in a note to see the _Share..._ option, or use the new "More" (...) menu for toolbars in Settings.
+- When the recipient clicks on the link, they will be prompted for confirmation and see a preview of the toolbar.
 
-<img src="https://github.com/user-attachments/assets/91bfa3d8-d8d3-41ff-baa9-e70cf192b0be" width="700"/>
+→ Learn more about [how sharing works](https://github.com/chrisgurney/obsidian-note-toolbar/wiki/Sharing-toolbars).
 
-## Other improvements
-
-- Most plugin startup tasks are now done after the layout's ready, and after initial toolbar rendering, which may help with performance. `#ObsidianOctober`
-- An error message is now shown if a [Note Toolbar URI](https://github.com/chrisgurney/obsidian-note-toolbar/wiki/Note-Toolbar-URIs) contains invalid parameters.
-- Fixed: Toolbar icons/text weren't being vertically centered by a few pixels, due to a line-height being added.
+<a href="https://github.com/user-attachments/assets/a1d59acb-729c-4017-83d9-99985a920cf9">
+  <img src="https://github.com/user-attachments/assets/a1d59acb-729c-4017-83d9-99985a920cf9" width="700"/>
+</a>
 
 ---
 
-In case you missed it:
+# Import toolbars and items from Note Toolbar Callouts
 
-# v1.13 - _What's New_ and _Help_ windows; Access toolbars for linked notes from the file menu
+Create toolbars from [Note Toolbar Callouts](https://github.com/chrisgurney/obsidian-note-toolbar/wiki/Note-Toolbar-Callouts) in one of two ways:
 
-- The **_What's New_ window** available in settings (you're looking at it), to provides highlights of the latest features in Note Toolbar.
-- A new **_Help_ window** points users to documentation, support, and to a new, easy-to-use [feedback form](https://forms.gle/2C38u9F8xTrutB1q8).
-- **Access your toolbars from the file menu:** When right-clicking on an internal link, the toolbar for the linked note is displayed.
+1. import a callout into a new, or existing toolbar in Settings; or
+2. select some Note Toolbar Callout markdown in a note, then right-click and _Create Note Toolbar from callout_.
 
-<a href="https://github.com/user-attachments/assets/8d650aaa-6b67-4a6b-8296-f27920214706">
-    <img src="https://github.com/user-attachments/assets/8d650aaa-6b67-4a6b-8296-f27920214706" width="300"/>
+<a href="https://github.com/user-attachments/assets/0b82104e-f5f4-40f9-9880-3e9425c5f908">
+  <img src="https://github.com/user-attachments/assets/0b82104e-f5f4-40f9-9880-3e9425c5f908" width="700"/>
 </a>
 
-Read the [1.13 release notes](https://github.com/chrisgurney/obsidian-note-toolbar/releases/tag/1.13) to learn more.
+→ Learn more about [importing toolbars and items](https://github.com/chrisgurney/obsidian-note-toolbar/wiki/Creating-toolbars-from-callouts).
 
-# v1.12 - Translations; Quick access to all of your tools
+---
 
-- Thanks to some generous volunteers, the Note Toolbar plugin UI and Style Settings have been translated to: **Chinese Simplified** (简体中文) by @Moyf, **German** (Deutsch) by @hartimd, and **Ukrainian** (Український) by @laktiv.
-- Introducing **Quick Tools**: Quickly access all of your tools and toolbars wherever you are with these commands:
-  - `Note Toolbar: Open quick tools` to show all tools, and execute straight from that window;
-  - `Note Toolbar: Open quick toolbars` to show all toolbars, which when selected takes you into the tools window.
+# Copy toolbars as callouts
 
-<a href="https://github.com/chrisgurney/obsidian-note-toolbar/releases/tag/1.12.1">
-    <img src="https://github.com/user-attachments/assets/acbf87f9-7a66-49d8-9b82-df961f6c63d8" width="700"/>
+Right-click on a toolbar to copy it as a Note Toolbar Callout, to your clipboard.
+
+<a href="https://github.com/user-attachments/assets/f69ad45f-2b52-4c0d-a332-92c68e736c5d">
+  <img src="https://github.com/user-attachments/assets/f69ad45f-2b52-4c0d-a332-92c68e736c5d" width="700"/>
 </a>
 
-Read the [1.12 release notes](https://github.com/chrisgurney/obsidian-note-toolbar/releases/tag/1.12.1) to learn more.
+→ Learn more about [copying toolbars as callouts](https://github.com/chrisgurney/obsidian-note-toolbar/wiki/Creating-callouts-from-toolbars), including what's supported and what's not.
+
+---
+
+# Commands to make building callouts easier
+
+`Note Toolbar: Copy URI for command`
+
+Lets you select a command and then copies its URI to the clipboard. Example output:
+
+```markdown
+obsidian://note-toolbar?command=workspace:toggle-pin
+```
+
+`Note Toolbar: Copy callout item for command`
+
+Lets you select a command, and then copies a Note Toolbar Callout line to the clipboard. Example output:
+
+```markdown
+[]()<data data-ntb-command="workspace:toggle-pin"/> <!-- Toggle pin -->
+```
+
+...then all you need to do is choose what the item should look like in the link's text (`[]`).
+
+---
+
+# Other improvements
+
+- In Settings, in the toolbar list, look for a new "More" (...) menu (where "Duplicate" used to be) containing _Duplicate_, _Share_, _Copy as callout_, and _Delete_ options.
+- Most plugin startup tasks are now done after the layout's ready, and after initial toolbar rendering, which may help with startup performance. `#ObsidianOctober`
+- An error message is now shown if a [Note Toolbar URI](https://github.com/chrisgurney/obsidian-note-toolbar/wiki/Note-Toolbar-URIs) contains invalid parameters.
+- Quick Toolbars: Items are kept in order they're displayed in the toolbar, when browsing by toolbar. _Thanks to @Glint-Eye for the suggestion._
+- Updated the _Help_ window with a link to a bug report Google form, removing the pre-requisite for a GitHub account.
+- Updated the _What's New_ window with a permanent link to the Roadmap, at the bottom.
+
+---
+
+# Fixes
+
+- Duplicated toolbar items without changes now update the settings UI, save the change, and re-render the toolbar.
+- Toolbar icons/text weren't being vertically centered by a few pixels, due to a line-height being added.
+
+---
+
+# And in case you missed it...
+
+- [v1.13 release](https://github.com/chrisgurney/obsidian-note-toolbar/releases/tag/1.13): _What's New_ + _Help_ windows, and access to toolbars for linked notes from the file menu.
+- [v1.12 release](https://github.com/chrisgurney/obsidian-note-toolbar/releases/tag/1.12.1): Translations, and Quick Tools (fast access to all of your tools).

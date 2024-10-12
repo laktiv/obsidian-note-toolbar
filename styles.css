@@ -2238,6 +2238,10 @@ input[type="text"].note-toolbar-setting-error {
     }
 }
 
+.is-phone .note-toolbar-setting-dialog-phonefix {
+    padding: 1em;
+}
+
 .note-toolbar-setting-mini-dialog {
     width: calc(var(--dialog-width) / 1.5);
 }
@@ -2277,7 +2281,7 @@ input[type="text"].note-toolbar-setting-error {
 }
 
 .note-toolbar-share-dialog {
-    .setting-item {
+    .setting-item:first-of-type {
         border-top: none;
         .setting-item-info {
             overflow: auto;
@@ -2384,6 +2388,9 @@ input[type="text"].note-toolbar-setting-error {
     }
     ul {
         padding-inline-start: 2em;
+    }
+    button.copy-code-button {
+        display: none;
     }
 }
 

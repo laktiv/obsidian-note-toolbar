@@ -39,6 +39,18 @@ Wondering what's ahead? See the [Roadmap](https://github.com/chrisgurney/obsidia
 - [Keyboard controls](https://github.com/chrisgurney/obsidian-note-toolbar/wiki/Accessibility) available via the _Note Toolbar: Focus_ command
 - Right-click toolbars to quickly change the position, or to access configuration
 
+# Translations 🌐
+
+Note Toolbar is also available in:
+
+|Language name|Native name|What's translated|Contributors|
+|---|---|---|---|
+|Chinese (Simplified)|简体中文|Plugin UI, Style Settings|[@Moyf](https://github.com/Moyf)|
+|German|Deutsch|Plugin UI, Style Settings|[@hartimd](https://github.com/hartimd)|
+|Ukrainian|Український|Plugin UI, Style Settings|[@Laktiv](https://github.com/laktiv)|
+
+[Help add more translations.](https://github.com/chrisgurney/obsidian-note-toolbar/wiki/Help-translate-Note-Toolbar-%F0%9F%8C%90)
+
 # Installation
 
 [Click here](https://obsidian.md/plugins?id=note-toolbar) or:
@@ -46,6 +58,7 @@ Wondering what's ahead? See the [Roadmap](https://github.com/chrisgurney/obsidia
 1. Open Obsidian's settings, and click _Community plugins_
 2. Search for _Note Toolbar_ and select it
 3. _Install_
+4. Make sure to _Enable_ the plugin
 
 <details>
 <summary>Installing beta versions via BRAT</summary>
@@ -76,19 +89,6 @@ As beta versions become available, I welcome <a href="https://github.com/chrisgu
 </blockquote>
 </details>
 
-# Translations 🌐
-
-Note Toolbar is also available in:
-
-|Language name|Native name|What's translated|Contributors|
-|---|---|---|---|
-|Chinese (Simplified)|简体中文|Plugin UI, Style Settings|[@Moyf](https://github.com/Moyf)|
-|German|Deutsch|Plugin UI, Style Settings|[@hartimd](https://github.com/hartimd)|
-|Ukrainian|Український|Plugin UI, Style Settings|[@Laktiv](https://github.com/laktiv)|
-
-[Help add more translations.](https://github.com/chrisgurney/obsidian-note-toolbar/wiki/Help-translate-Note-Toolbar-%F0%9F%8C%90)
-
-
 # Getting Started 🚀
 
 Once enabled, open Note Toolbar's settings:
@@ -113,7 +113,7 @@ If you want your toolbar to show without using a property, try mapping a folder 
 
 📖 **See the [User Guide](https://github.com/chrisgurney/obsidian-note-toolbar/wiki).**
 
-Once installed, in Obsidian go to: _Settings... > Note Toolbar_ and click _+ New toolbar_.
+Once installed and enabled, in Obsidian go to: _Settings... > Note Toolbar_ and click _+ New toolbar_.
 
 ![Example of settings configuration](./docs/settings.png)
 
