@@ -1,8 +1,11 @@
 {
 	"command": {
 		"name-focus": "Фокусування",
-		"name-item-suggester": "Швидко інструменти",
+		"name-item-suggester": "Швидкі інструменти",
 		"name-toolbar-suggester": "Швидко панелі",
+		"name-copy-command-uri": "Копіювати URI для команди",
+		"name-copy-command-as-data-element": "Копіювати текст виноски команди",
+		"copy-command-notice": "Команду скопійовано в буфер обміну",
 		"name-settings": "Налаштування додатку",
 		"name-toolbar-settings": "Параметри панелі",
 		"name-show-properties": "Показати властивості",
@@ -17,28 +20,35 @@
 		"label-share-description": "Поділіться цим посиланням з іншим користувачем Note Toolbar, щоб додати Вашу панель до його сховища.",
 		"label-share-preview": "перегляд",
 		"title-share": "Поширення панелі: {{toolbar}}",
-		"button-copy-uri": "Копіювати URI",
-		"button-copy-uri-description": "Скопіюйте це посилання в буфер обміну",
+		"button-copy-link": "Копіювати посилання",
+		"button-copy-link-description": "Скопіювати це посилання в буфер обміну",
 		"notice-completed": "Панель скопійовано до буфера обміну як виноску",
-		"notice-shared": "Noto Toolbar URI скопійований до буфера обміну",
-		"confirm-vars-title": "Змінні, що використовуються в цій панелі",
+		"notice-shared": "Посилання Note Toolbar скопійовано в буфер обміну",
+		"confirm-vars-title": "Використані змінні у цій панелі",
 		"confirm-vars-question": "Ви хочете замінити ці змінні у виносці?",
 		"label-vars-approve": "Замінити",
 		"label-vars-deny": "Залишити як є",
 		"warning-share-menu": "Ця панель посилається принаймні на одну іншу панель, яку одержувач не отримає.",
-		"error-share-length": "Деякі браузери можуть не завантажити URL-адреси довжиною, більше ніж 2048 символів."
+		"error-share-length": "Деякі браузери можуть не завантажити URL-адреси довжиною, більше ніж 2048 символів.",
+		"option-uri": "Використати Obsidian URI",
+		"option-uri-description": "Надає посилання obsidian:// замість URL-адреси https://."
 	},
 	"import": {
-		"title-import": "Імпорт Note Toolbar: {{toolbar}}",
-		"title-import-into": "Імпортувати виноску до панелі: {{toolbar}}",
-		"label-import-confirmation": "Підтвердить, що ви бажаєте імпортувати цю панель:",
-		"label-import-into": "Вставте виноску Note Toolbar нижче для імпорту до цієї панелі.",
+		"title-import": "Створити панель із виноски",
+		"title-import-confirmation": "Створити Note Toolbar: {{toolbar}}",
+		"title-import-into": "Додати елементи виноски до панелі: {{toolbar}}",
+		"label-import-confirmation": "Підтвердить, що бажаєте створити нову панель. Після додавання цю панель потрібно буде зіставити з однією, або кількома нотатками.",
+		"label-import": "Вставте виноску Note Toolbar нижче для імпорту до цієї панелі.",
+		"label-import-into": "Вставте виноску Note Toolbar нижче для додавання елементів до цієї панелі.",
 		"label-import-into-help": "Заголовок виноски не потрібен, або буде проігнорований, якщо вказаний.",
-		"label-confirm": "Підтвердити",
-		"label-cancel": "Скасувати",
+		"button-add-items": "Додати елементи",
+		"button-cancel": "Скасувати",
+		"button-create": "Створити",
+		"button-confirm": "Підтвердити",
 		"option-create": "Створити Note Toolbar із виноски...",
 		"option-help": "Про виноски Note Toolbar",
-		"button-import-tooltip": "Імпортувати з виноски",
+		"button-import-tooltip": "Створити панель із виноски",
+		"button-import-into-tooltip": "Додати елементи панелі із виноски",
 		"error-invalid-uri-content": "Note Toolbar: схоже, з цим посиланням виникла проблема. Перевірте правильність URI або перегляньте посібник користувача.",
 		"errorlog-heading": "Помилки виявлені під час імпорту панелі:",
 		"errorlog-item": "Елемент {{number}}:",
@@ -77,6 +87,12 @@
 		"option-platform-mobile": "Мобільний",
 		"title-edit-toolbar": "Редагування панелі: {{toolbar}}",
 		"title-edit-toolbar_none": "Редагувати панель",
+		"command-suggest-modal": {
+			"placeholder": "Пошук команди...",
+			"instruction-navigate": "перейти",
+			"instruction-use": "використати",
+			"instruction-dismiss": "скасувати"
+		},
 		"delete-toolbar": {
 			"name": "Видалення панелі",
 			"description": "Цю дію не можна скасувати.",
@@ -293,7 +309,7 @@
 			"button-new-tbar": "+ Нова панель",
 			"button-new-tbar-tooltip": "Додати нову панель",
 			"duplicated-tbar-suffix": "копіювати",
-			"imported-tbar-name": "Панель імпортована ",
+			"imported-tbar-name": "Нова панель",
 			"label-empty-create-tbar": "Натисніть кнопку, щоб створити нову панель.",
 			"label-tbar-name-not-set": "⚠️ Ім'я панелі не встановлено"
 		},
@@ -308,8 +324,8 @@
 			"button-read-tooltip": "Відкрити github.com",
 			"label-release-notes": "Примітки до випуску",
 			"label-release-notes-description": "Детальні коментарі до останніх випусків розміщені на GitHub.",
-			"label-roadmap": "План розробки",
-			"label-roadmap-description": "Цікаво, що чекає на Note Toolbar? Перегляньте функції, що на розгляданні."
+			"label-roadmap": "Що чекає попереду Note Toolbar?",
+			"label-roadmap-description": "Ознайомтеся з дорожньою картою, щоб переглянути функції які розглядаються."
 		}
 	},
 	"toolbar": {
