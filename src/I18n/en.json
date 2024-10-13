@@ -24,12 +24,8 @@
         "button-copy-link-description": "Copy this link to your clipboard",
         "notice-completed": "Toolbar copied to clipboard as callout",
         "notice-shared": "Note Toolbar link copied to clipboard",
-        "confirm-vars-title": "Variables are used in this toolbar",
-        "confirm-vars-question": "Do you want to replace these variables in the callout?",
-        "label-vars-approve": "Replace",
-        "label-vars-deny": "Leave as-is",
         "warning-share-menu": "This toolbar refers to at least one other toolbar that the recipient won't receive.",
-        "error-share-length": "Some web browsers may not load a URL that is longer than 2,048 characters.",
+        "warning-share-length": "Some web browsers may not load a URL that is longer than 2,048 characters.",
         "option-uri": "Use Obsidian URI",
         "option-uri-description": "Provides an obsidian:// link instead of an https:// URL."
     },
@@ -92,6 +88,16 @@
             "instruction-navigate": "to navigate",
             "instruction-use": "to select command",
             "instruction-dismiss": "to dismiss"
+        },
+        "copy-as-callout": {
+            "title": "Copy as callout",
+            "description": "Define what's included when toolbars are converted to callouts.",
+            "option-icons": "Include icons",
+            "option-icons-description": "Output icons in Iconize format. The Iconize plugin must be installed and enabled to see icons.",
+            "option-menu-ids": "Use menu IDs",
+            "option-menu-ids-description": "Use the ID of the menu's toolbar instead of its name. Turn this off, if you want to share this callout.",
+            "option-vars": "Replace variables",
+            "option-vars-description": "Replace any variables used in this toolbar with their values in the note you're exporting from."
         },
         "delete-toolbar": {
             "name": "Delete this toolbar",

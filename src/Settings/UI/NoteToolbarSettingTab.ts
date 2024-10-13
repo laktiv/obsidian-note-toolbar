@@ -1,4 +1,4 @@
-import { App, ButtonComponent, Menu, MenuItem, Notice, Platform, PluginSettingTab, Setting, debounce, normalizePath } from 'obsidian';
+import { App, ButtonComponent, Menu, MenuItem, Notice, Platform, PluginSettingTab, Setting, ToggleComponent, debounce, normalizePath } from 'obsidian';
 import NoteToolbarPlugin from 'main';
 import { arraymove, debugLog, getElementPosition, getUUID, moveElement } from 'Utils/Utils';
 import { createToolbarPreviewFr, displayHelpSection, showWhatsNewIfNeeded, emptyMessageFr, learnMoreFr } from "./Utils/SettingsUIUtils";
@@ -81,6 +81,7 @@ export class NoteToolbarSettingTab extends PluginSettingTab {
 		this.displayFolderMap(containerEl);
 
 		// other global settings
+		this.displayCopyAsCalloutSettings(containerEl);
 		this.displayOtherSettings(containerEl);
 
 		if (focusSelector) {
@@ -221,7 +222,7 @@ export class NoteToolbarSettingTab extends PluginSettingTab {
 											.setTitle(t('export.label-callout'))
 											.setIcon('copy')
 											.onClick(async () => {
-												let calloutExport = await exportToCallout(this.plugin, toolbar);
+												let calloutExport = await exportToCallout(this.plugin, toolbar, this.plugin.settings.export);
 												navigator.clipboard.writeText(calloutExport);
 												new Notice(learnMoreFr(t('export.notice-completed'), 'Creating-callouts-from-toolbars'));
 											});
@@ -518,6 +519,52 @@ export class NoteToolbarSettingTab extends PluginSettingTab {
 		toolbarFolderListItemDiv.append(itemHandleDiv);
 
 		return toolbarFolderListItemDiv;
+
+	}
+
+	/**
+	 * Displays settings for exporting/copying to markdown.
+	 * @param containerEl 
+	 */	
+	displayCopyAsCalloutSettings(containerEl: HTMLElement): void {
+
+		new Setting(containerEl)
+			.setName(t('setting.copy-as-callout.title'))
+			.setDesc(learnMoreFr(t('setting.copy-as-callout.description'), 'Creating-callouts-from-toolbars'))
+			.setHeading();
+
+		let iconSetting = new Setting(containerEl)
+			.setName(t('setting.copy-as-callout.option-icons'))
+			.setDesc(t('setting.copy-as-callout.option-icons-description'))
+			.addToggle((cb: ToggleComponent) => {
+				cb
+					.setValue(this.plugin.settings.export.includeIcons)
+					.onChange(async (value) => {
+						this.plugin.settings.export.includeIcons = value;
+					});
+			});
+
+		new Setting(containerEl)
+			.setName(t('setting.copy-as-callout.option-menu-ids'))
+			.setDesc(t('setting.copy-as-callout.option-menu-ids-description'))
+			.addToggle((cb: ToggleComponent) => {
+				cb
+					.setValue(this.plugin.settings.export.useMenuIds)
+					.onChange(async (value) => {
+						this.plugin.settings.export.useMenuIds = value;
+					});
+			});
+
+		new Setting(containerEl)
+			.setName(t('setting.copy-as-callout.option-vars'))
+			.setDesc(t('setting.copy-as-callout.option-vars-description'))
+			.addToggle((cb: ToggleComponent) => {
+				cb
+					.setValue(this.plugin.settings.export.resolveVars)
+					.onChange(async (value) => {
+						this.plugin.settings.export.resolveVars = value;
+					});
+			});
 
 	}
 

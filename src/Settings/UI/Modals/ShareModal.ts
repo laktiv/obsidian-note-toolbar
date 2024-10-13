@@ -2,6 +2,7 @@ import NoteToolbarPlugin from "main";
 import { ButtonComponent, Modal, Notice, Setting, ToggleComponent } from "obsidian";
 import { ItemType, t, ToolbarSettings } from "Settings/NoteToolbarSettings";
 import { learnMoreFr } from "../Utils/SettingsUIUtils";
+import { toolbarHasMenu } from "Utils/Utils";
 
 export class ShareModal extends Modal {
 
@@ -69,13 +70,13 @@ export class ShareModal extends Modal {
         //
 
         const isLongUri = this.shareUri.length > 2048;
-        const hasMenu = this.toolbar.items.some(item => (item.linkAttr.type === ItemType.Menu) && (item.link));
+        const hasMenu = toolbarHasMenu(this.toolbar);
 
         if (isLongUri || hasMenu) {
             let disclaimers = this.contentEl.createDiv();
             disclaimers.addClass('note-toolbar-setting-field-help');
             let disclaimersList = disclaimers.createEl('ul');
-            isLongUri ? disclaimersList.createEl('li', { text: t('export.error-share-length') }) : undefined;
+            isLongUri ? disclaimersList.createEl('li', { text: t('export.warning-share-length') }) : undefined;
             hasMenu ? disclaimersList.createEl('li', { text: t('export.warning-share-menu') }) : undefined;
         }
 

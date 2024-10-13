@@ -1,9 +1,7 @@
 import NoteToolbarPlugin from "main";
-import { DEFAULT_ITEM_VISIBILITY_SETTINGS, DEFAULT_STYLE_OPTIONS, ItemType, MOBILE_STYLE_OPTIONS, t, ToolbarItemSettings, ToolbarSettings } from "Settings/NoteToolbarSettings";
-import { debugLog, getUUID, replaceVars, toolbarHasVars } from "./Utils";
+import { DEFAULT_ITEM_VISIBILITY_SETTINGS, DEFAULT_STYLE_OPTIONS, ExportSettings, ItemType, MOBILE_STYLE_OPTIONS, t, ToolbarItemSettings, ToolbarSettings } from "Settings/NoteToolbarSettings";
+import { debugLog, getUUID, replaceVars } from "./Utils";
 import { Command, getIcon, Notice, TFile, TFolder } from "obsidian";
-import { confirmWithModal } from "Settings/UI/Modals/ConfirmModal";
-import { learnMoreFr } from "Settings/UI/Utils/SettingsUIUtils";
 
 const toIconizeFormat = (s: string) => 
     `:Li${s.replace(/^lucide-/, '')
@@ -11,20 +9,14 @@ const toIconizeFormat = (s: string) =>
         .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
         .join('')}:`;
 
-type ExportOptions = {
-    includeIcons: boolean;
-    resolveVars: boolean;
-    useMenuIds: boolean;
-}
-
 /**
  * Exports the given toolbar as a Note Toolbar Callout
  * @param plugin NoteToolbarPlugin
  * @param toolbar ToolbarSettings for the toolbar to export
- * @param forShareUri set to true if export is triggered from share
+ * @param options ExportSettings
  * @returns Note Toolbar Callout as a string
  */
-export async function exportToCallout(plugin: NoteToolbarPlugin, toolbar: ToolbarSettings, forShareUri: boolean = false): Promise<string> {
+export async function exportToCallout(plugin: NoteToolbarPlugin, toolbar: ToolbarSettings, options: ExportSettings): Promise<string> {
     
     debugLog('exportToCallout()', 'enabled plugins', (plugin.app as any).plugins.plugins);
 
@@ -37,26 +29,6 @@ export async function exportToCallout(plugin: NoteToolbarPlugin, toolbar: Toolba
     // get the active file to provide context, and to replace vars if requested
     let activeFile = plugin.app.workspace.getActiveFile();
 
-    let options = {
-        includeIcons: false,
-        resolveVars: false,
-        useMenuIds: forShareUri ? false : true
-    } as ExportOptions
-
-    // Iconize - check if plugin is enabled to output icons
-    const hasIconize = (plugin.app as any).plugins.plugins['obsidian-icon-folder'];
-    options.includeIcons = (hasIconize || forShareUri) ? true : false;
-
-    // if there are variables, as user if they should be replaced
-    if (!forShareUri && toolbarHasVars(toolbar)) {
-        options.resolveVars = await confirmWithModal(plugin.app, { 
-            title: t('export.confirm-vars-title'),
-            questionFragment: learnMoreFr(t('export.confirm-vars-question'), 'Variables'),
-            approveLabel: t('export.label-vars-approve'),
-            denyLabel: t('export.label-vars-deny')
-        });
-    }
-
     calloutExport += exportToCalloutList(plugin, toolbar, activeFile, options) + '\n';
 
     return calloutExport;
@@ -68,7 +40,7 @@ export async function exportToCallout(plugin: NoteToolbarPlugin, toolbar: Toolba
  * @param plugin NoteToolbarPlugin
  * @param toolbar ToolbarSettings for the toolbar to export
  * @param activeFile TFile this export is being run from, for context if needed
- * @param options ExportOptions
+ * @param options ExportSettings
  * @param recursions tracks how deep we are to stop recursion
  * @returns Note Toolbar Callout items as a bulleted list string
  */
@@ -76,7 +48,7 @@ function exportToCalloutList(
     plugin: NoteToolbarPlugin,
     toolbar: ToolbarSettings,
     activeFile: TFile | null,
-    options: ExportOptions,
+    options: ExportSettings,
     recursions: number = 0
 ): string {
 
@@ -110,7 +82,7 @@ function exportToCalloutList(
                 break;
             case ItemType.Command:
                 itemsExport += `${BULLET} [${itemIcon}${itemText}]()<data data-ntb-command="${item.linkAttr.commandId}"/>`;
-                // calloutExport += `${BULLET} [${itemIcon}${itemText}](<obsidian://note-toolbar?commandid=${item.linkAttr.commandId}>)`;
+                // itemsExport += `${BULLET} [${itemIcon}${itemText}](<obsidian://note-toolbar?commandid=${item.linkAttr.commandId}>)`;
                 break;
             case ItemType.File:
                 // check if the provided file links to a folder, and if so replace with a folder
@@ -118,7 +90,7 @@ function exportToCalloutList(
                 let fileOrFolder = this.app.vault.getAbstractFileByPath(resolvedItemLink);
                 if (fileOrFolder instanceof TFolder) {
                     itemsExport += `${BULLET} [${itemIcon}${itemText}]()<data data-ntb-folder="${itemLink}"/>`;
-                    // calloutExport += `${BULLET} [${itemIcon}${itemText}](<obsidian://note-toolbar?folder=${itemLink}>)`;
+                    // itemsExport += `${BULLET} [${itemIcon}${itemText}](<obsidian://note-toolbar?folder=${itemLink}>)`;
                 }
                 else {
                     itemsExport += `${BULLET} [[${itemLink}|${itemIcon}${itemText}]]`;
@@ -130,14 +102,14 @@ function exportToCalloutList(
                 // TODO: skipped/ignored message if toolbar not found
                 break;
             case ItemType.Menu:
-                if (options.useMenuIds) {
-                    itemsExport += `${BULLET} [${itemIcon}${itemText}]()<data data-ntb-menu="${itemLink}"/>`;
-                }
-                else {
+                let menuLink = itemLink;
+                if (!options.useMenuIds) {
                     let menuToolbar = plugin.settingsManager.getToolbar(item.link);
-                    itemsExport += menuToolbar ? `${BULLET} [${itemIcon}${itemText}]()<data data-ntb-menu="${menuToolbar.name}"/>` : '';
-                    // TODO: skipped/ignored message if toolbar not found
+                    menuLink = menuToolbar ? menuToolbar.name : menuLink;
+                    // TODO: skipped/ignored message if toolbar not found?
                 }
+                itemsExport += `${BULLET} [${itemIcon}${itemText}]()<data data-ntb-menu="${menuLink}"/>`;
+                // itemsExport += `${BULLET} [${itemIcon}${itemText}](<obsidian://note-toolbar?menu=${menuLink}>)`;
                 break;
             case ItemType.Separator:
                 itemsExport += `${BULLET} <hr/>`;
