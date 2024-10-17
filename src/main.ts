@@ -1,7 +1,7 @@
-import { CachedMetadata, Editor, FrontMatterCache, ItemView, MarkdownFileInfo, MarkdownView, Menu, MenuItem, MenuPositionDef, Notice, ObsidianProtocolData, Platform, Plugin, TFile, TFolder, addIcon, debounce, getIcon, setIcon, setTooltip } from 'obsidian';
+import { CachedMetadata, Editor, FrontMatterCache, ItemView, MarkdownFileInfo, MarkdownView, MarkdownViewModeType, Menu, MenuItem, MenuPositionDef, Notice, Platform, Plugin, TFile, TFolder, addIcon, debounce, getIcon, setIcon, setTooltip } from 'obsidian';
 import { NoteToolbarSettingTab } from 'Settings/UI/NoteToolbarSettingTab';
 import { ToolbarSettings, NoteToolbarSettings, PositionType, ItemType, CalloutAttr, t, ToolbarItemSettings, ToolbarStyle, RibbonAction } from 'Settings/NoteToolbarSettings';
-import { calcComponentVisToggles, calcItemVisToggles, debugLog, isValidUri, hasVars, putFocusInMenu, replaceVars, getLinkUiDest, isViewCanvas } from 'Utils/Utils';
+import { calcComponentVisToggles, calcItemVisToggles, debugLog, isValidUri, hasVars, putFocusInMenu, replaceVars, getLinkUiDest, isViewCanvas, insertTextAtCursor } from 'Utils/Utils';
 import ToolbarSettingsModal from 'Settings/UI/Modals/ToolbarSettingsModal';
 import { SettingsManager } from 'Settings/SettingsManager';
 import { CommandsManager } from 'Commands/CommandsManager';
@@ -19,8 +19,9 @@ export default class NoteToolbarPlugin extends Plugin {
 	settings: NoteToolbarSettings;	
 	settingsManager: SettingsManager;
 	
-	// track the last opened file, to reduce unneccessary re-renders 
+	// track the last opened layout state, to reduce unneccessary re-renders 
 	lastFileOpenedOnLayoutChange: TFile | null | undefined;
+	lastViewModeOnLayoutChange: MarkdownViewModeType | undefined;
 	// track the last used callout link, for the menu URI
 	lastCalloutLink: Element | null = null;
 	// track the plugins available, to help with rendering edge cases
@@ -201,11 +202,14 @@ export default class NoteToolbarPlugin extends Plugin {
 		let viewMode = currentView?.getMode();
 		debugLog('===== LAYOUT-CHANGE ===== ', currentView?.file?.name, currentView, viewMode);
 		// partial fix for Hover Editor bug where toolbar is redrawn if in Properties position (#14)
-		if (this.lastFileOpenedOnLayoutChange !== currentView?.file) {
-			this.lastFileOpenedOnLayoutChange = currentView?.file;
+		const fileChanged = this.lastFileOpenedOnLayoutChange !== currentView?.file;
+		const viewModeChanged = this.lastViewModeOnLayoutChange !== viewMode;
+		if (fileChanged || viewModeChanged) {
+			this.lastFileOpenedOnLayoutChange = fileChanged ? currentView?.file : this.lastFileOpenedOnLayoutChange;
+			this.lastViewModeOnLayoutChange = viewModeChanged ? viewMode : this.lastViewModeOnLayoutChange;
 		}
 		else {
-			return; // this isn't a new file, so do nothing
+			return; // no changes, so do nothing
 		}
 		// check for editing or reading mode
 		switch(viewMode) {
