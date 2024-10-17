@@ -177,7 +177,7 @@
             "option-item-menu": "Item Menu",
             "option-item-menu-placeholder": "Toolbar",
             "option-item-menu-help": "Select a toolbar to open as a menu.",
-            "option-item-menu-error-does-not-exist": "Toolbar does not exist",            
+            "option-item-menu-error-does-not-exist": "Toolbar does not exist",
             "option-label-placeholder": "Label (optional, if icon set)",
             "option-separator": "separator",
             "option-tooltip-placeholder": "Tooltip (optional)",
