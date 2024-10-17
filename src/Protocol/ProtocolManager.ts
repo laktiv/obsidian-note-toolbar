@@ -37,7 +37,7 @@ export class ProtocolManager {
         else if (data.import) {
             const content = decodeURIComponent(data.import);
 			// double-check provided text is a Note Toolbar Callout
-			if (/^[>\s]*\[\!\s*note-toolbar\s*\|\s*/.test(data.import)) {
+			if (data.import.includes('[!note-toolbar')) {
 				confirmImportWithModal(
 					this.plugin, 
 					content
@@ -106,8 +106,9 @@ export class ProtocolManager {
     async getShareUri(toolbar: ToolbarSettings, useObsidianUri: boolean = false): Promise<string> {
 		const options = {
 			includeIcons: true,
-			resolveVars: false,
-			useMenuIds: false
+			replaceVars: false,
+			useDataEls: true,
+			useIds: false
 		} as ExportSettings;
         let callout = await exportToCallout(this.plugin, toolbar, options);
 		const shareUri = useObsidianUri 

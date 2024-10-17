@@ -424,6 +424,10 @@ body {
             background-color: unset;
             border-radius: unset;
         }
+        /* fix for bold Iconize icons #162 */
+        & .cm-iconize-icon svg svg[stroke-width='16px'] {
+            stroke-width: 2;
+        }
         &:hover {
             /* themes like Cyber Glow add a hover color to callouts; remove it for toolbars */
             background-color: unset;
@@ -754,6 +758,10 @@ body {
     }
     & .note-toolbar-setting-tbar-preview {
         color: var(--color-base-60);
+        & svg {
+            height: var(--font-ui-medium);
+            width: var(--font-ui-medium);            
+        }
     }
     &:focus-within {
         border-radius: var(--input-radius);
@@ -910,7 +918,9 @@ input[type="text"].note-toolbar-setting-error {
     margin-bottom: 1em;
 }
 
-.note-toolbar-setting-items-container {
+.note-toolbar-setting-callout-container,
+.note-toolbar-setting-items-container,
+.note-toolbar-setting-mappings-container {
     padding-top: 0.75em;
     &[data-active="true"] {
         & .note-toolbar-setting-items-list-container {
@@ -928,6 +938,15 @@ input[type="text"].note-toolbar-setting-error {
         & .setting-item .note-toolbar-setting-item-expand svg {
             transform: rotate(-90deg);
             transition: 0.1s;
+        }
+    }
+}
+
+.note-toolbar-setting-callout-container {
+    & .note-toolbar-setting-items-list-container {
+        .setting-item:first-child {
+            padding: 0.75em 0;
+            border-top: 1px solid var(--background-modifier-border);
         }
     }
 }
@@ -1457,6 +1476,12 @@ input[type="text"].note-toolbar-setting-error {
     border: 1px solid var(--background-modifier-border);
     border-radius: 8px;
     padding: 0em 1em 1em 1em;
+    & .note-toolbar-setting-tbar-preview {
+        & svg {
+            height: var(--font-ui-medium);
+            width: var(--font-ui-medium);            
+        }
+    }
 }
 
 .note-toolbar-setting-import-text-area {
@@ -1478,6 +1503,7 @@ input[type="text"].note-toolbar-setting-error {
 .note-toolbar-share-dialog {
     .setting-item:first-of-type {
         border-top: none;
+        overflow: hidden;
         .setting-item-info {
             overflow: auto;
             .setting-item-name {
@@ -1524,6 +1550,15 @@ input[type="text"].note-toolbar-setting-error {
     }
 }
 
+.is-phone .note-toolbar-setting-whatsnew-dialog {
+    .modal-header {
+        padding-top: 0;
+        .modal-title {
+            max-width: unset;
+        }
+    }
+}
+
 .note-toolbar-setting-whatsnew-dialog {
     padding: 0;
     padding-bottom: 0.75em;
@@ -1564,11 +1599,13 @@ input[type="text"].note-toolbar-setting-error {
 
 .note-toolbar-setting-whatsnew-content {
     padding-inline: 1em;
-    h1 {
-        font-size: var(--font-ui-large);
+    code {
+        font-size: calc(var(--font-ui-small) + 1px);
     }
     h2 {
-        font-size: var(--font-ui-medium);
+        font-size: var(--font-ui-large);
+        border-bottom: solid 1px var(--background-modifier-border);
+        padding-bottom: 0.3em;
     }
     hr {
         margin: 1rem 0;
@@ -1579,7 +1616,7 @@ input[type="text"].note-toolbar-setting-error {
         width: 100%;
     }
     p {
-        font-size: var(--font-ui-medium);
+        font-size: calc(var(--font-ui-small) + 1px);
     }
     ul {
         padding-inline-start: 2em;
