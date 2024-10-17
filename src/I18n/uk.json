@@ -4,7 +4,7 @@
         "name-item-suggester": "Швидкі інструменти",
         "name-toolbar-suggester": "Швидко панелі",
         "name-copy-command-uri": "Копіювати URI для команди",
-        "name-copy-command-as-data-element": "Копіювати текст виноски команди",
+        "name-copy-command-as-data-element": "Копіювати елемент виноски для команди",
         "copy-command-notice": "Команду скопійовано в буфер обміну",
         "name-settings": "Налаштування додатку",
         "name-toolbar-settings": "Параметри панелі",
@@ -17,12 +17,12 @@
         "item-generic": "Елемент{{number}}",
         "label-callout": "Скопіювати як виноску",
         "label-share": "Поширити...",
-        "label-share-description": "Поділіться цим посиланням з іншим користувачем Note Toolbar, щоб додати Вашу панель до його сховища.",
+        "label-share-description": "Поширте це посиланням іншому користувачу Note Toolbar, щоб додати Вашу панель до його сховища.",
         "label-share-preview": "перегляд",
         "title-share": "Поширення панелі: {{toolbar}}",
         "button-copy-link": "Копіювати посилання",
         "button-copy-link-description": "Скопіювати це посилання в буфер обміну",
-        "notice-completed": "Панель скопійовано до буфера обміну як виноску",
+        "notice-completed": "Панель скопійовано до буфера обміну як виноску. Відкрийте налаштування, щоб змінити форматування.",
         "notice-shared": "Посилання Note Toolbar скопійовано в буфер обміну",
         "warning-share-menu": "Ця панель посилається принаймні на одну іншу панель, яку одержувач не отримає.",
         "warning-share-length": "Деякі браузери можуть не завантажити URL-адреси довжиною, більше ніж 2048 символів.",
@@ -69,8 +69,10 @@
     },
     "setting": {
         "button-cancel": "Скасувати",
+        "button-collapse-tooltip": "Згорнути розділ",
         "button-delete-tooltip": "Видалити",
         "button-drag-tooltip": "Перетягніть, щоб змінити порядок",
+        "button-expand-tooltip": "Розгорнути розділ",
         "button-help": "Довідка",
         "button-help-tooltip": "Відкрити довідник",
         "button-learn-more": "▶\u00A0Докладніше",
@@ -90,14 +92,16 @@
             "instruction-dismiss": "скасувати"
         },
         "copy-as-callout": {
-            "title": "Копіювання як виноски",
-            "description": "Визначте, що буде включено до панелі після її конвертації до виноски.",
-            "option-icons": "Додавати іконки",
-            "option-icons-description": "Включати іконки у форматі Iconize. Щоб їх бачити, має бути встановлен та ввімкнен додаток Iconize.",
-            "option-menu-ids": "Використовувати ID меню",
-            "option-menu-ids-description": "Користуйтеся ідентифікаторами меню панелі, замість їх назв. Вимкніть цю опцію, якщо поширюєте її як виноску.",
+            "title": "Копіювання тексту виноски",
+            "description": "Визначити, що відбудеться, коли панелі перетворюються на виноску.",
+            "option-icons": "Додати іконки",
+            "option-icons-description": "",
             "option-vars": "Автозаміна змінних",
-            "option-vars-description": "Обновіть усі змінні, що використовуються панеллю, на значення з нотатки з якої експортуєте."
+            "option-vars-description": "Усі змінні використані у панелі будуть замінені на значення з нотатки, котра зараз відображається. Приклад: {{note_title}} → Моя нотатка",
+            "option-ids": "Використовуйте ідентифікатор у меню",
+            "option-ids-description": "Це гарантує, що елементи меню залишаться доступними, навіть якщо перейменувати панель. Якщо вимкнути цей параметр, при поширенні виноски буде використовуватися назва панелі.",
+            "option-data": "Використовуйте елементи даних",
+            "option-data-description": "Дані елементів дозволяють працювати панелям, відкритих у нових вікнах. Якщо вимкнено, то будуть використатися Note Toolbar URI замість даних елементів, що також забезпечить чистіший вигляд markdown."
         },
         "delete-toolbar": {
             "name": "Видалення панелі",
@@ -113,17 +117,7 @@
             "description": "Визначте, на яких нотах показувати панелі, використовуючи властивості, зіставлення, або обидва засоби.",
             "option-property": "Властивість",
             "option-property-description": "Якщо назва панелі вказана во Властивості, тоді вона з'явиться у нотатці. Виконується з перевагою над будь-якими зіставленням тек. Якщо треба сховати панель, вкажіть 'none'.",
-            "option-property-placeholder": "Властивість",
-            "option-folder-all": "всі теки",
-            "option-folder-root": "тільки коренева тека",
-            "option-folder-mappings": "Зіставленні теки",
-            "option-folder-mappings-description": "У нотатках з вказаних теках, будуть автоматично відображатися панелі по створеним зіставленням. Пріоритет зверху вниз.",
-            "option-folder-mappings-empty": "Натисніть на кнопку, щоб створити прив'язку.",
-            "placeholder-mapping-folder": "Тека",
-            "placeholder-mapping-toolbar": "Панель",
-            "button-new-mapping": "+ Нове зіставлення",
-            "button-new-mapping-tooltip": "Додати нову прив'язку",
-            "error-folder-already-mapped": "Ця тека вже має асоційовану з нею панель."
+            "option-property-placeholder": "Властивість"
         },
         "help": {
             "title": "Довідка Note Toolbar 🛟",
@@ -142,8 +136,10 @@
             "label-bug-description": "Знайшли помилку? Надішліть її у GitHub або заповніть цю Google форму.",
             "label-donate": "Buy me a coffee",
             "label-donate-description": "Якщо Ви вважаєте цей додаток корисним, і хочете підтримати мене фінансово, обміркуйте про донат. Дякую!",
+            "label-examples": "Дивитися приклади",
+            "label-examples-description": "Get inspired by these ready-to-go toolbar examples.",
             "label-feedback": "Залишити відгук",
-            "label-feedback-description": "Використовуйте цю Google форму для будь-яких відгуків, запитань, проблем або ідей, які можуть у Вас виникнути.",
+            "label-feedback-description": "Використовуйте цю Google форму для будь-яких відгуків, запитань або ідей, які є у вас.",
             "label-support": "Підтримка",
             "label-support-description": "Відвідайте форуми на GitHub, щоб поставити запитання спільноті.",
             "label-user-guide": "Читати Посібник користувача",
@@ -214,8 +210,6 @@
             "label-empty-no-items": "Немає елементів панелі.",
             "button-add-break-tooltip": "Додати розрив панелі",
             "button-add-separator-tooltip": "Додати роздільник панелі",
-            "button-collapse-items-tooltip": "Згорнути всі елементи",
-            "button-expand-items-tooltip": "Розгорнути всі елементи",
             "button-new-item": "+ Додати елемент",
             "button-new-item-tooltip": "Додавання нового елемента до панелі",
             "option-item-empty-label": "Міток не встановлено",
@@ -223,6 +217,21 @@
             "option-edit-item-group-tooltip_none": "Редагувати групу елементів",
             "option-edit-item-tooltip": "Редагувати елемент панелі",
             "option-edit-item-type-tooltip": "Редагувати {{itemType}}"
+        },
+        "mappings": {
+            "name": "Зіставленні теки",
+            "name-with-count": "Зіставлені теки ({{count}})",
+            "description": "У нотатках з розташованих нижче тек, відображатимуться відповідна їм панель. Пріоритет зверху вниз.",
+            "label-empty": "Натисніть кнопку, щоб створити зіставлення.",
+            "placeholder-folder": "Тека",
+            "placeholder-toolbar": "Панель",
+            "button-collapse-tooltip": "Згорнути всі зіставлення",
+            "button-expand-tooltip": "Розгорнути всі зіставлення",
+            "button-new": "+ Нове зіставлення",
+            "button-new-tooltip": "Додати нове зіставлення",
+            "option-folder-all": "всі теки",
+            "option-folder-root": "тільки коренева тека",
+            "error-folder-already-mapped": "Ця тека вже має пов'язану з нею панель."
         },
         "name": {
             "name": "Назва",
@@ -233,24 +242,24 @@
             "name": "Інше",
             "icon": {
                 "name": "Іконка",
-                "description": "Встановлює іконку плаваючої кнопки (мобільний пристрій). Потребує перезавантаження.",
+                "description": "Іконка плаваючої кнопки на мобільному. Потребує перезавантаження.",
                 "tooltip": "Обрати іконку"
             },
             "ribbon-action": {
                 "name": "Іконка Стрічкового меню 📱",
-                "description": "Дія при натисканні іконки стрічкового меню (на телефонах).",
+                "description": "Дія натискання іконки стрічкового меню (мобільні).",
                 "option-toolbar": "Показати поточну панель",
                 "option-item-suggester": "Показати всі інструменти",
                 "option-toolbar-suggester": "Показати всі панелі"
             },
             "show-edit-tbar": {
                 "name": "Відображати 'Редагувати' в меню панелей 📱",
-                "description": "Додає елемент доступу до налаштувань панелі, котрий відображається у вигляді меню внизу екрана телефона."
+                "description": "Додає пункт налаштування панелі, показаний як меню внизу екрана телефона."
             }
         },
         "position": {
             "name": "Розташування",
-            "description": "Розташовання цієї панелі",
+            "description": "Де розташувати цю панель.",
             "option-mobile-help": "ℹ️ Панель доступна через Панель навігації.",
             "option-fabl": "Плаваюча кнопка: ліворуч",
             "option-fabr": "Плаваюча кнопка: праворуч",
@@ -291,7 +300,7 @@
             "option-default-description": "Застосовується до всіх платформ, якщо не перевизначено.",
             "option-default-empty": "Не встановлено стандартних стилів.",
             "option-mobile-name": "Мобільний 📱",
-            "option-mobile-description": "Замінити стилі за замовчуванням.",
+            "option-mobile-description": "Перевизначити типові стилі.",
             "option-mobile-empty": "Не встановлено мобільних стилів. Діють типові стилі.",
             "style-tooltip-use-class": "Використовувати у виносках або CSS: {{class}}",
             "style-remove-tooltip": "Видалити"
@@ -306,17 +315,15 @@
             "name": "Панелі",
             "name-with-count": "Панелі ({{count}})",
             "description": "Задайте панелі, які Ви бажаєте додавати до ваших нотаток.",
-            "button-collapse-tbars-tooltip": "Згорнути всі панелі",
             "button-duplicate-tbar-tooltip": "Дублювати",
             "button-edit-tbar": "Редагувати",
-            "button-expand-tbars-tooltip": "Розгорнути всі панелі",
             "button-edit-tbar-tooltip": "Оновити цю панель",
             "button-more-tooltip": "Більше",
             "button-new-tbar": "+ Нова панель",
             "button-new-tbar-tooltip": "Додати нову панель",
             "duplicated-tbar-suffix": "копіювати",
             "imported-tbar-name": "Нова панель",
-            "label-empty-create-tbar": "Натисніть кнопку, щоб створити нову панель.",
+            "label-empty-create-tbar": "Натисніть кнопку для створення панелі.",
             "label-tbar-name-not-set": "⚠️ Ім'я панелі не встановлено"
         },
         "usage": {
