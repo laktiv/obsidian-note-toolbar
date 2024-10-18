@@ -105,7 +105,14 @@ export default class ToolbarSettingsModal extends Modal {
 		this.displayStyleSetting(settingsDiv);
 		this.displayUsageSetting(settingsDiv);
 		this.displayDeleteButton(settingsDiv);
-		displayHelpSection(this.plugin, settingsDiv, true);
+
+		displayHelpSection(this.plugin, settingsDiv, true, () => {
+			this.close();
+			if (this.parent) {
+				// @ts-ignore
+				this.plugin.app.setting.close();
+			}
+		});
 
 		this.contentEl.appendChild(settingsDiv);
 
@@ -129,7 +136,7 @@ export default class ToolbarSettingsModal extends Modal {
 		// scroll to the position when the modal was last open
 		this.rememberLastPosition(this.contentEl.children[0] as HTMLElement);
 
-		// show the What's New dialog once, if the user hasn't seen it yet
+		// show the What's New view once, if the user hasn't seen it yet
 		showWhatsNewIfNeeded(this.plugin);
 
 	}

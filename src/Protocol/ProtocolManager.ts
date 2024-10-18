@@ -1,10 +1,9 @@
 import NoteToolbarPlugin from "main";
 import { Notice, ObsidianProtocolData } from "obsidian";
-import { ExportSettings, t, ToolbarSettings } from "Settings/NoteToolbarSettings";
+import { ExportSettings, t, ToolbarSettings, VIEW_TYPE_WHATS_NEW } from "Settings/NoteToolbarSettings";
 import { HelpModal } from "Settings/UI/Modals/HelpModal";
 import { confirmImportWithModal } from "Settings/UI/Modals/ImportConfirmModal";
 import ToolbarSettingsModal from "Settings/UI/Modals/ToolbarSettingsModal";
-import { WhatsNewModal } from "Settings/UI/Modals/WhatsNewModal";
 import { exportToCallout, importFromCallout } from "Utils/ImportExport";
 import { debugLog } from "Utils/Utils";
 
@@ -89,8 +88,10 @@ export class ProtocolManager {
 			}
 		}
 		else if (data.whatsnew) {
-			const whatsNewModal = new WhatsNewModal(this.plugin);
-			whatsNewModal.open();
+			this.plugin.app.workspace.getLeaf(true).setViewState({
+				type: VIEW_TYPE_WHATS_NEW,
+				active: true
+			});
 		}
 		else {
 			new Notice(t('notice.error-uri-params-not-supported', { params: Object.keys(data).join(', ')}));
