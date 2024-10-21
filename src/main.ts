@@ -1,6 +1,6 @@
 import { CachedMetadata, Editor, FrontMatterCache, ItemView, MarkdownFileInfo, MarkdownView, MarkdownViewModeType, Menu, MenuItem, MenuPositionDef, Notice, Platform, Plugin, TFile, TFolder, WorkspaceLeaf, addIcon, debounce, getIcon, setIcon, setTooltip } from 'obsidian';
 import { NoteToolbarSettingTab } from 'Settings/UI/NoteToolbarSettingTab';
-import { ToolbarSettings, NoteToolbarSettings, PositionType, ItemType, CalloutAttr, t, ToolbarItemSettings, ToolbarStyle, RibbonAction, VIEW_TYPE_WHATS_NEW } from 'Settings/NoteToolbarSettings';
+import { ToolbarSettings, NoteToolbarSettings, PositionType, ItemType, CalloutAttr, t, ToolbarItemSettings, ToolbarStyle, RibbonAction, VIEW_TYPE_WHATS_NEW, ScriptConfig } from 'Settings/NoteToolbarSettings';
 import { calcComponentVisToggles, calcItemVisToggles, debugLog, isValidUri, hasVars, putFocusInMenu, replaceVars, getLinkUiDest, isViewCanvas, insertTextAtCursor } from 'Utils/Utils';
 import ToolbarSettingsModal from 'Settings/UI/Modals/ToolbarSettingsModal';
 import { WhatsNewView } from 'Settings/UI/Views/WhatsNewView';
@@ -11,6 +11,9 @@ import { exportToCallout, importFromCallout } from 'Utils/ImportExport';
 import { learnMoreFr } from 'Settings/UI/Utils/SettingsUIUtils';
 import { ProtocolManager } from 'Protocol/ProtocolManager';
 import { ShareModal } from 'Settings/UI/Modals/ShareModal';
+import DataviewAdapter from 'Adapters/DataviewAdapter';
+import TemplaterAdapter from 'Adapters/TemplaterAdapter';
+import JsEngineAdapter from 'Adapters/JsEngineAdapter';
 
 export default class NoteToolbarPlugin extends Plugin {
 
@@ -23,12 +26,21 @@ export default class NoteToolbarPlugin extends Plugin {
 	// track the last opened layout state, to reduce unneccessary re-renders 
 	lastFileOpenedOnLayoutChange: TFile | null | undefined;
 	lastViewModeOnLayoutChange: MarkdownViewModeType | undefined;
+
 	// track the last used callout link, for the menu URI
 	lastCalloutLink: Element | null = null;
+
 	// track the plugins available, to help with rendering edge cases
-	hasPlugin: {[key: string]: boolean} = {
-		"make-md": false
+	hasPlugin: { [key: string]: boolean } = {
+		'dataview': false,
+		'js-engine': false,
+		'make-md': false,
+		'templater-obsidian': false,
 	}
+
+	dv: DataviewAdapter | undefined;
+	jse: JsEngineAdapter | undefined;
+	tp: TemplaterAdapter | undefined;
 
 	/**
 	 * When this plugin is loaded (e.g., on Obsidian startup, or plugin is enabled in settings):
@@ -114,18 +126,20 @@ export default class NoteToolbarPlugin extends Plugin {
 				(window["NoteToolbar"] = this) && this.register(() => delete window["NoteToolbar"]);	
 			}
 
-			this.registerView(
-				VIEW_TYPE_WHATS_NEW,
-				(leaf: WorkspaceLeaf) => new WhatsNewView(this, leaf)
-			);
+			// register custom view: What's New
+			this.registerView(VIEW_TYPE_WHATS_NEW, (leaf: WorkspaceLeaf) => new WhatsNewView(this, leaf));
 
-			// for edge cases, check what other plugins are enabled that we need to know about
+			// check what other plugins are enabled that we need to know about
 			Object.keys(this.hasPlugin).forEach(pluginKey => {
 				if (pluginKey in (this.app as any).plugins.plugins) {
 					debugLog(`${pluginKey} present`);
 					this.hasPlugin[pluginKey] = true;
 				}
 			});
+
+			this.dv = this.hasPlugin['dataview'] ? new DataviewAdapter(this) : undefined;
+			this.jse = this.hasPlugin['js-engine'] ? new JsEngineAdapter(this) : undefined;
+			this.tp = this.hasPlugin['templater-obsidian'] ? new TemplaterAdapter(this) : undefined;
 
 		});
 
@@ -934,21 +948,22 @@ export default class NoteToolbarPlugin extends Plugin {
 	 * @param file optional TFile if handling links outside of the active file
 	 */
 	async handleItemLink(item: ToolbarItemSettings, event?: MouseEvent | KeyboardEvent, file?: TFile) {
-		await this.handleLink(item.link, item.linkAttr.type, item.linkAttr.hasVars, item.linkAttr.commandId, event, file);
+		await this.handleLink(item.uuid, item.link, item.linkAttr.type, item.linkAttr.hasVars, item.linkAttr.commandId, event, file);
 	}
 
 	/**
 	 * Handles the link provided.
-	 * @param linkHref What the link is for.
+	 * @param uuid ID of the item
+	 * @param linkHref what the link is for
 	 * @param type: ItemType
 	 * @param hasVars: boolean
 	 * @param commandId: string or null
 	 * @param event MouseEvent or KeyboardEvent from where link is activated
 	 * @param file optional TFile if handling links outside of the active file
 	 */
-	async handleLink(linkHref: string, type: ItemType, hasVars: boolean, commandId: string | null, event?: MouseEvent | KeyboardEvent, file?: TFile) {
+	async handleLink(uuid: string, linkHref: string, type: ItemType, hasVars: boolean, commandId: string | null, event?: MouseEvent | KeyboardEvent, file?: TFile) {
 
-		// debugLog("handleLink()", linkHref, type, hasVars, commandId, event);
+		// debugLog("handleLink", uuid, linkHref, type, hasVars, commandId, event);
 		this.app.workspace.trigger("note-toolbar:item-activated", 'test');
 
 		let activeFile = this.app.workspace.getActiveFile();
@@ -1258,6 +1273,8 @@ export default class NoteToolbarPlugin extends Plugin {
 	
 			if (linkHref != null) {
 				
+				const itemUuid = clickedEl.id;
+
 				let linkType = clickedEl.getAttribute("data-toolbar-link-attr-type") as ItemType;
 				linkType ? (Object.values(ItemType).includes(linkType) ? event.preventDefault() : undefined) : undefined
 	
@@ -1275,7 +1292,7 @@ export default class NoteToolbarPlugin extends Plugin {
 					await this.removeFocusStyle();
 				}
 
-				await this.handleLink(linkHref, linkType, linkHasVars, linkCommandId, event);
+				await this.handleLink(itemUuid, linkHref, linkType, linkHasVars, linkCommandId, event);
 	
 			}
 
@@ -1390,6 +1407,13 @@ export default class NoteToolbarPlugin extends Plugin {
 			return null;
 		}
 		return propertiesContainer;
+	}
+
+	getScriptOutputEl(calloutMeta: string): HTMLElement | null {
+		let currentView = this.app.workspace.getActiveViewOfType(MarkdownView);
+		let containerEl = activeDocument.querySelector('.workspace-leaf.mod-active .markdown-' + currentView?.getMode() + '-view .callout[data-callout="note-toolbar"][data-callout-metadata*="' + calloutMeta + '"]') as HTMLElement;
+		debugLog("getScriptOutputEl()", containerEl);
+		return containerEl;
 	}
 
 	/**
