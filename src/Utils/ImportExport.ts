@@ -141,7 +141,8 @@ async function exportToCalloutList(
                 itemsExport += `${BULLET} <hr/>`;
                 break;
             case ItemType.Uri:
-                itemsExport += itemLink ? `${BULLET} [${itemIcon}${itemText}](<${itemLink}>)` : '';
+                // item links that start with < such as Templater expressions are left alone
+                itemsExport += itemLink ? `${BULLET} [${itemIcon}${itemText}](${itemLink.startsWith('<') ? itemLink : `<${itemLink}>`})` : '';
                 break;
         }
 
@@ -280,10 +281,13 @@ export async function importFromCallout(
         }
         else {
 
-            // FIXME? decode URLs not in angle brackets <>
-            const linkMatch = line.match(/\[(.*?)\]\(<?(.*?)>?\)|\[\[(.*?)(?:\|(.*?))?\]\]/);
+            const dataUriMatch = line.match(/<data data-(ntb-)?(command|dataview|folder|js-engine|menu|templater-obsidian)="(.*?)"(.*?)(\/?>|$)|obsidian:\/\/note-toolbar\?(command|folder|menu)=(.*?)>?\)/);
             const tooltipMatch = line.match(/<!--\s*(.*?)\s*-->/);
-            const dataUriMatch = line.match(/data-(ntb-)?(command|dataview|folder|js-engine|menu|templater-obsidian)="(.*?)"(.*?)(\/?>|$)|obsidian:\/\/note-toolbar\?(command|folder|menu)=(.*?)>?\)/);
+
+            // remove the data element and tooltip to ensure the whole link is included in the match
+            let linkText = dataUriMatch ? line.replace(dataUriMatch[0], '').trim() : line;
+            linkText = tooltipMatch ? linkText.replace(tooltipMatch[0], '').trim() : linkText;
+            const linkMatch = linkText.match(/\[(.*?)\]\(<?(.*?)>?\)$|\[\[(.*?)(?:\|(.*?))?\]\]/);
 
             if (linkMatch) {
 

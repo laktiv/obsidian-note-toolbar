@@ -254,8 +254,7 @@ export default class NoteToolbarPlugin extends Plugin {
 				// debugLog("layout-change: position: ", toolbarPos);
 				this.app.workspace.onLayoutReady(debounce(() => {
 					// the props position is the only case where we have to reset the toolbar, due to re-rendering order of the editor
-					// TODO: remove this code if it's not causing regressions
-					// toolbarPos === 'props' ? this.removeActiveToolbar() : undefined;
+					toolbarPos === 'props' ? this.removeActiveToolbar() : undefined;
 					this.lastViewIdOpened = getViewId(currentView);
 					this.renderToolbarForActiveFile();
 				}, (viewMode === "preview" ? 200 : 0)));
@@ -292,8 +291,7 @@ export default class NoteToolbarPlugin extends Plugin {
 		}
 
 		if (renderToolbar) {
-			// TODO: remove this code if it's not causing regressions
-			// this.removeActiveToolbar();
+			this.removeActiveToolbar();
 			this.lastViewIdOpened = viewId;
 			// don't seem to need a delay before rendering for leaf changes
 			this.renderToolbarForActiveFile();
@@ -1497,30 +1495,56 @@ export default class NoteToolbarPlugin extends Plugin {
 					})
 				});
 
+			// position menu
 			let currentPosition = this.settingsManager.getToolbarPosition(toolbarSettings);
-			if (currentPosition === 'props' || currentPosition === 'top') {
-				contextMenu.addSeparator();
-				contextMenu.addItem((item: MenuItem) => {
-					item
-						.setTitle(currentPosition === 'props' ? t('toolbar.menu-position-top') : t('toolbar.menu-position-props'))
-						.setIcon(currentPosition === 'props' ? 'arrow-up-to-line' : 'arrow-down-narrow-wide')
-						.onClick((menuEvent) => {
-							let newPosition: PositionType = currentPosition === PositionType.Props ? PositionType.Top : PositionType.Props;
-							if (toolbarSettings?.position) {
-								Platform.isDesktop ?
-									toolbarSettings.position.desktop = { allViews: { position: newPosition } }
-									: toolbarSettings.position.mobile = { allViews: { position: newPosition } };
-								toolbarSettings.updated = new Date().toISOString();
-								this.settingsManager.save();
-							}
-						});
-				});
-			}
-
+			contextMenu.addSeparator();
+			contextMenu.addItem((item: MenuItem) => {
+				item.setTitle(t('toolbar.menu-position'));
+				item.setIcon('move');
+				let subMenu = item.setSubmenu() as Menu;
+				if (currentPosition !== PositionType.Top) {
+					subMenu.addItem((item: MenuItem) => {
+						item.setTitle(t('setting.position.option-top'))
+							.setIcon('arrow-up-to-line')
+							.onClick((menuEvent) => this.setPosition(toolbarSettings, PositionType.Top));
+					});
+				}
+				if (currentPosition !== PositionType.Props) {
+					subMenu.addItem((item: MenuItem) => {
+						item.setTitle(t('setting.position.option-props'))
+							.setIcon('arrow-down-narrow-wide')
+							.onClick((menuEvent) => this.setPosition(toolbarSettings, PositionType.Props));
+					});
+				}
+				if (currentPosition !== PositionType.FabLeft) {
+					subMenu.addItem((item: MenuItem) => {
+						item.setTitle(t('setting.position.option-fabl'))
+							.setIcon('circle-chevron-left')
+							.onClick((menuEvent) => this.setPosition(toolbarSettings, PositionType.FabLeft));
+					});
+				}
+				if (currentPosition !== PositionType.FabRight) {
+					subMenu.addItem((item: MenuItem) => {
+						item.setTitle(t('setting.position.option-fabr'))
+							.setIcon('circle-chevron-right')
+							.onClick((menuEvent) => this.setPosition(toolbarSettings, PositionType.FabRight));
+					});
+				}
+			});
 		}
 
 		contextMenu.showAtPosition(e);
 
+	}
+
+	async setPosition(toolbarSettings: ToolbarSettings | undefined, newPosition: PositionType) {
+		if (toolbarSettings?.position) {
+			Platform.isDesktop ?
+				toolbarSettings.position.desktop = { allViews: { position: newPosition } }
+				: toolbarSettings.position.mobile = { allViews: { position: newPosition } };
+			toolbarSettings.updated = new Date().toISOString();
+			await this.settingsManager.save();
+		}
 	}
 
 	/*************************************************************************
@@ -1765,7 +1789,7 @@ export default class NoteToolbarPlugin extends Plugin {
 			let prefix = this.dvAdapter?.getSetting('inlineQueryPrefix');
 			if (prefix && s.trim().startsWith(prefix)) {
 				s = s.trim().slice(prefix.length); // strip prefix before evaluation
-				let result = await this.dvAdapter?.use({ pluginFunction: 'evaluate', expression: s });
+				let result = await this.dvAdapter?.use({ pluginFunction: 'evaluateInline', expression: s });
 				s = (result && typeof result === 'string') ? result : '';
 			}
 			// TODO? support for dvjs? example: $=dv.el('p', dv.current().file.mtime)
@@ -1782,7 +1806,7 @@ export default class NoteToolbarPlugin extends Plugin {
 				s = s.trim();
 				if (!s.startsWith('<%')) s = '<%' + s;
 				if (!s.endsWith('%>')) s += '%>';
-				let result = await this.tpAdapter?.use({ pluginFunction: 'parseTemplate', expression: s });
+				let result = await this.tpAdapter?.use({ pluginFunction: 'parseTemplateInline', expression: s });
 				s = (result && typeof result === 'string') ? result : '';
 			}
 		}

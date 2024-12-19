@@ -419,8 +419,7 @@
     "toolbar": {
         "button-floating-tooltip": "Відкрити Note Toolbar",
         "menu-edit-toolbar": "Редагувати панель: {{toolbar}}...",
-        "menu-position-props": "Розташувати під властивостями",
-        "menu-position-top": "Розмістити зверху (фіксовано)",
+        "menu-position": "Розташування",
         "menu-toolbar-settings": "Налаштування Note Toolbar..."
     }
 }
