@@ -305,9 +305,11 @@ export default class NoteToolbarPlugin extends Plugin {
 	 * @param cache CachedMetadata, from which we look at the frontmatter.
 	 */
 	metadataCacheListener = (file: TFile, data: any, cache: CachedMetadata) => {
-		// debugLog("metadata-changed: " + file.name);
+		debugLog('===== METADATA-CHANGE ===== ', file.name);
 		const activeFile = this.app.workspace.getActiveFile();
 		if (activeFile === file) {
+			const currentView: MarkdownView | null = this.app.workspace.getActiveViewOfType(MarkdownView);
+			this.lastViewIdOpened = getViewId(currentView) ?? this.lastViewIdOpened;
 			this.checkAndRenderToolbar(file, cache.frontmatter);
 		}
 
@@ -1531,6 +1533,26 @@ export default class NoteToolbarPlugin extends Plugin {
 					});
 				}
 			});
+		}
+
+		// show/hide properties
+		const propsEl = this.getPropsEl();
+		if (propsEl) {
+			const propsDisplayStyle = getComputedStyle(propsEl).getPropertyValue('display');
+			if (propsDisplayStyle === 'none') {
+				contextMenu.addItem((item: MenuItem) => {
+					item.setTitle(t('command.name-show-properties'))
+						.setIcon('table-properties')
+						.onClick(async (menuEvent) => this.commands.toggleProps('show'));
+				});
+			}
+			else {
+				contextMenu.addItem((item: MenuItem) => {
+					item.setTitle(t('command.name-hide-properties'))
+						.setIcon('table-properties')
+						.onClick(async (menuEvent) => this.commands.toggleProps('hide'));
+				});
+			}
 		}
 
 		contextMenu.showAtPosition(e);
