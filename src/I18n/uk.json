@@ -1,7 +1,11 @@
 {
     "adapter": {
+        "args": "Аргументи (за бажанням)",
         "args-description": "Аргументи, що приймаються скриптовою функцією, у форматі 'name: value' через кому.",
+        "outputcontainer": "ID виводу виноски (за бажанням)",
         "outputcontainer-description": "Додайте до нотатки виноску note-toolbar-output з унікальним метаполем для вивода результату.",
+        "postCommand": "Команда після виконання (за бажанням)",
+        "postCommand-description": "Команда, що виконується після завершення скрипту.",
         "dataview": {
             "error-general": "⚠️ Помилка Dataview: перевірте консоль для отримання інформації.\n```\n{{error}}\n```",
             "dvjs-function": "Обчислити вираз Dataview JS",
@@ -30,7 +34,9 @@
             "importexec-sourcefile": "Файл JavaScript",
             "importexec-sourcefile-description": "JavaScript для імпорту. Зверніть увагу, що файл імпортується лише один раз. Можливо доведеться перезапустити Obsidian для збереження змін.",
             "importexec-sourcefile-error-required": "⚠️ Помилка: Потрібен JavaScript файл",
+            "importexec-sourcefunction": "Функція (за бажанням)",
             "importexec-sourcefunction-description": "Якщо скрипт має функції, вкажіть ім'я функції виконання.",
+            "importexec-args": "Аргументи (за бажанням)",
             "importexec-args-description": "Аргументи, що приймаються скриптовою функцією, у форматі 'name: value' через кому."
         },
         "templater": {
@@ -42,6 +48,7 @@
             "create-sourcefile": "Шаблон",
             "create-sourcefile-description": "Файл Templater для створення нового файлу.",
             "create-sourcefile-error-required": "⚠️ Помилка: Потрібен Templater файл",
+            "create-outputfile": "Ім'я вихідного файлу (за бажанням)",
             "create-outputfile-description": "Ім'я файлу (без розширення) та тек для створення від вказаного шаблону.",
             "eval-function": "Виконати команду Templater ",
             "eval-expr": "Команда Templater",
@@ -55,6 +62,7 @@
         "error": {
             "args-parsing": "Не вдалося розібрати аргументи скрипта: {{filename}}",
             "args-parsing-error": "Не вдалося розібрати аргументи скрипта: {{filename}}\n```\n{{error}}\n```",
+            "callout-not-found": "⚠️ Помилка: Не вдалося знайти виноску note-toolbar-output у поточній нотатці з ID: {{id}}",
             "exec-failed": "Помилка виконання скрипта: {{filename}}",
             "exec-note-not-open": "Цей скрипт повинен виконуватися з відкритої нотатки.",
             "expr-failed": "Не вдалося обчислити вираз: {{expression}}",
@@ -72,6 +80,7 @@
         "name-item-suggester": "Швидкі інструменти",
         "name-toolbar-suggester": "Швидко панелі",
         "name-copy-command-uri": "Копіювати URI команди",
+        "name-copy-command-as-data-element": "Копіювати елемент виноски для команди",
         "copy-command-notice": "Команду скопійовано до буфера обміну",
         "name-settings": "Налаштування додатку",
         "name-toolbar-settings": "Параметри панелі",
@@ -102,6 +111,7 @@
         "title-import-into": "Додати елементи виноски до панелі: {{toolbar}}",
         "label-import-confirmation": "Підтвердить, що бажаєте створити нову панель. Після додавання цю панель потрібно буде зіставити з однією, або кількома нотатками.",
         "label-import": "Вставте текст виноски Note Toolbar для імпорту панелі.",
+        "label-import-into": "Вставте нижче виноску у форматі Note Toolbar для додавання елементів до панелі. Вказані стилі будуть проігноровані.",
         "label-import-into-help": "Заголовок виноски не потрібен, або буде проігнорований, якщо вказаний.",
         "button-add-items": "Додати елементи",
         "button-cancel": "Скасувати",
@@ -145,6 +155,7 @@
         "button-help": "Довідка",
         "button-help-tooltip": "Відкрити довідник",
         "button-learn-more": "Докладніше",
+        "button-user-guide": "Посібник користувача",
         "button-whats-new": "Що\u00A0нового?",
         "button-whats-new-tooltip": "Відкрити \"Що нового\"",
         "error-old-settings-name": "⚠️ Помилка: Будь ласка, вимкніть та перезапустіть Note Toolbar, або перезавантажте Obsidian.",
@@ -163,6 +174,7 @@
             "title": "Копіювання як виноски",
             "description": "Визначити налаштування дій перетворення панелі на текст виноски.",
             "option-icons": "Додавати іконки",
+            "option-icons-description": "Додавати іконки до виносок (наприклад, :LiHome:). Потребує наявності та увімкнення додатку Iconize. Якщо вимкнений, замість Написів використовуватимуться Підказки. Інші користувачі можуть імпортувати іконки.",
             "option-vars": "Автозаміна змінних",
             "option-vars-description": "Усі використані у панелі змінні будуть замінені на значення з поточної нотатки. Приклад: {{note_title}} → Моя нотатка",
             "option-ids": "Додавати ID",
@@ -221,13 +233,17 @@
         },
         "item": {
             "button-duplicate-tooltip": "Дублювати цей елемент",
+            "button-icon-tooltip": "Обрати іконку (за бажанням)",
             "label-preview-edit": "Редагувати панель: {{toolbar}}",
             "label-preview-empty-no-items": "Немає елементів. Редагуйте цю панель для додавання елементів.",
             "option-break": "розрив",
             "option-command": "Команда",
+            "option-command-error-does-not-exist": "Цієї команди не існує.",
             "option-command-error-not-available-install": "Ця команда недоступна. Додаток має бути встановлений та увімкнений.",
             "option-command-error-not-available-search": "Команда не знайдена. Спробуйте пошукати ще раз.",
             "option-command-error-refresh": "Оновити",
+            "option-command-placeholder": "Знайти команду по назві",
+            "option-component-icon": "іконку",
             "option-component-label": "напис",
             "option-file": "Файл",
             "option-file-placeholder": "Пошук файлу чи теки",
@@ -235,17 +251,25 @@
             "option-item-group": "Група",
             "option-item-group-placeholder": "Панель",
             "option-item-group-help": "Виберіть панель для вставки в цю нотатку.",
+            "option-item-group-error-does-not-exist": "Панелі не існує",
             "option-item-group-error-invalid": "⚠️ Недійсна група елементів",
             "option-item-menu": "Меню",
             "option-item-menu-placeholder": "Панель",
             "option-item-menu-help": "Виберіть панель для відкриття як меню.",
             "option-item-menu-error-does-not-exist": "Панель не існує",
+            "option-label-placeholder": "Напис (є іконка — за бажанням)",
             "option-separator": "роздільник",
+            "option-tooltip-placeholder": "Підказка (за бажанням)",
             "option-uri": "URI",
             "option-uri-placehoder": "Адреса сайту, URI або назва нотатки",
+            "option-uri-help": "ℹ️ Використовуйте властивості з нотатки в URI",
+            "option-visibility-component-hidden-platform": "сховати {{component}} на {{platform}}",
+            "option-visibility-component-visible-platform": "показати {{component}} на {{platform}}",
             "option-visibility-hidden": "приховано",
             "option-visibility-hidden-platform": "приховано на {{platform}}",
+            "option-visibility-visible-platform": "показувати на {{platform}}",
             "option-visibility-platform-desktop": "комп'ютері",
+            "option-visibility-platform-mobile": "мобільном 📱"
         },
         "item-suggest-modal": {
             "placeholder": "Пошук елемента...",
@@ -261,6 +285,7 @@
         "items": {
             "name": "Елементи",
             "name-with-count": "Елементи ({{count}})",
+            "description": "Додавайте до панелі елементи по черзі",
             "label-empty-no-items": "Немає елементів панелі.",
             "button-add-break-tooltip": "Додати розрив",
             "button-add-separator-tooltip": "Додати роздільник",
@@ -290,15 +315,18 @@
         "name": {
             "name": "Назва",
             "description": "Вкажіть унікальну назву панелі.",
+            "error-toolbar-already-exists": "Панель з таким ім'ям вже існує."
         },
         "other": {
             "name": "Інше",
             "icon": {
                 "name": "Іконка",
+                "description": "Іконка плаваючої кнопки на мобільном 📱. Потребує перезавантаження.",
                 "tooltip": "Обрати іконку"
             },
             "ribbon-action": {
                 "name": "Іконка Стрічкового меню 📱",
+                "description": "Дія натискання у стрічковому меню (мобільний).",
                 "option-toolbar": "Показати поточну панель",
                 "option-item-suggester": "Показати всі інструменти",
                 "option-toolbar-suggester": "Показати всі панелі"
@@ -309,6 +337,7 @@
             },
             "show-edit-tbar": {
                 "name": "Відображати 'Редагувати' в меню панелей 📱",
+                "description": "Додає пункт для налаштування панелі, який буде показан як меню внизу екрана мобільного."
             }
         },
         "position": {
@@ -328,6 +357,7 @@
             "help": "Налаштуйте ще більше з додатком Style Settings.",
             "option-placeholder": "Додати стиль...",
             "option-autohide": "автоматично ховати*",
+            "option-autohide-disclaimer": "Автоматичне приховування не поширюється на мобільном 📱.",
             "option-between": "інтервал між елементами",
             "option-border": "рамка",
             "option-button": "елементи як кнопки",
