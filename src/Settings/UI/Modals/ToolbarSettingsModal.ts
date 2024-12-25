@@ -1150,15 +1150,14 @@ export default class ToolbarSettingsModal extends Modal {
 						setting = new Setting(fieldDiv)
 							.setClass("note-toolbar-setting-item-field-link")
 							.addSearch((cb) => {
-								switch (toolbarItem.linkAttr.type) {
-									case ItemType.Templater:
-										const templatesFolder = this.plugin.tpAdapter?.getSetting('templates_folder');
-										new FileSuggester(this.app, cb.inputEl, true, undefined, templatesFolder);
-										break;
-									default:
-										new FileSuggester(this.app, cb.inputEl, true, '.js');
-										break;
+								debugLog('🚀', selectedFunction.function.name);
+								let fileSuggesterFolder: string | undefined = undefined;
+								let fileSuggesterExt: string | undefined = '.js';
+								if (toolbarItem.linkAttr.type === ItemType.Templater) {
+									fileSuggesterFolder = this.plugin.tpAdapter?.getSetting('templates_folder');
+									fileSuggesterExt = undefined;
 								}
+								new FileSuggester(this.app, cb.inputEl, true, fileSuggesterExt, fileSuggesterFolder);
 								cb.setPlaceholder(param.label)
 									.setValue(initialValue ? initialValue : '')
 									.onChange(debounce(async (value) => {
@@ -1588,6 +1587,16 @@ export default class ToolbarSettingsModal extends Modal {
 			.setClass("note-toolbar-setting-item-styles")
 			.settingEl.append(mobileStyleDiv);
 
+		new Setting(settingsDiv)
+			.setName(t('setting.styles.option-custom-name'))
+			.setDesc(learnMoreFr(t('setting.styles.option-custom-description'), 'Custom-styling'))
+			.addText(text => text
+				.setPlaceholder(t('setting.styles.option-custom-empty'))
+				.setValue(this.toolbar.customClasses)
+				.onChange(debounce(async (value) => {
+					this.toolbar.customClasses = value.trim();
+					await this.plugin.settingsManager.save();
+				}, 750)));
 
 		new Setting(settingsDiv)
 			.setDesc(learnMoreFr(t('setting.styles.help'), 'Style-Settings-plugin-support'));
