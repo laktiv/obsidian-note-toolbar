@@ -315,13 +315,13 @@
         "name": {
             "name": "Назва",
             "description": "Вкажіть унікальну назву панелі.",
-            "error-toolbar-already-exists": "Панель з таким ім'ям вже існує."
+            "error-toolbar-already-exists": "Панель з такою назвою вже існує."
         },
         "other": {
             "name": "Інше",
             "icon": {
                 "name": "Іконка",
-                "description": "Іконка плаваючої кнопки на мобільном 📱. Потребує перезавантаження.",
+                "description": "Задає іконку для плаваючої кнопки та панелі навігації (на мобільном 📱). Потребує перезавантаження.",
                 "tooltip": "Обрати іконку"
             },
             "ribbon-action": {
@@ -374,6 +374,9 @@
             "option-sticky-disclaimer": "Прикріплення не працює у режимі Читання.",
             "option-wide": "ширина редактора",
             "option-default-name": "Типовий стиль",
+            "option-custom-name": "Користувальницькі",
+            "option-custom-description": "Список класів, розділених пробілами, застосуємих до цієї панелі, визначених у сніпетах CSS.",
+            "option-custom-empty": "CSS класи",
             "option-default-description": "застосування стилів для всіх платформ (до перевизначення).",
             "option-default-empty": "Типові стилі ще не вказані.",
             "option-mobile-name": "Мобільний 📱",
