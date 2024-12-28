@@ -1170,7 +1170,6 @@ export default class ToolbarSettingsModal extends Modal {
 								this.updateItemComponentStatus(initialValue ? initialValue : '', param.type, cb.inputEl.parentElement);
 							});
 						break;
-					case SettingType.Args:
 					case SettingType.Text:
 						setting = new Setting(fieldDiv)
 							.setClass("note-toolbar-setting-item-field-link")
@@ -1189,6 +1188,7 @@ export default class ToolbarSettingsModal extends Modal {
 							});
 						// fieldHelp ? textSetting.controlEl.insertAdjacentElement('beforeend', fieldHelp) : undefined;
 						break;
+					case SettingType.Args:
 					case SettingType.TextArea:
 						setting = new Setting(fieldDiv)
 							.setClass("note-toolbar-setting-item-field-link")
@@ -1197,11 +1197,13 @@ export default class ToolbarSettingsModal extends Modal {
 									.setValue(initialValue ? initialValue : '')
 									.onChange(
 										debounce(async (value: string) => {
-											config[param.parameter as keyof ScriptConfig] = value;
+											let isValid = this.updateItemComponentStatus(value, param.type, cb.inputEl.parentElement);
+											config[param.parameter as keyof ScriptConfig] = isValid ? value : '';
 											this.toolbar.updated = new Date().toISOString();
 											await this.plugin.settingsManager.save();
 											this.renderPreview(toolbarItem); // to make sure error state is refreshed
-										}, 500));					
+										}, 500));
+								this.updateItemComponentStatus(initialValue ? initialValue : '', param.type, cb.inputEl.parentElement);					
 							});
 						break;
 				}
