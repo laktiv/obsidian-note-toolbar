@@ -28,7 +28,7 @@ Support for canvases, the File menu, and New tab view are now also grouped under
 
 ### Add a command for any item
 
-Add a command for any toolbar item you would like to execute from the command palette or a hot key. Use the new item action menu to add the command.
+Add a command for any toolbar item you would like to execute from the command palette or a hotkey. Use the new item action menu to add the command.
 
 <img src="https://github.com/user-attachments/assets/ddcf0e37-c5ec-4f66-bdc9-71979e8ae92f" width="600"/>
 
@@ -62,13 +62,14 @@ _Thank you @laktiv for the idea._
   - Arrow down out of the search field to navigate search results.
 - The new item actions menu (on phones) now contains the **Duplicate item** and **Delete** options, which helps give more room in the UI for visibility settings on smaller phones.
 
-### Other
+### Other improvements
 
 - Hotkeys assigned to toolbar commands will show in the toolbar list in settings. (Only the first mapped hotkey is shown.) _Thank you @mProjectsCode for the hotkey-handling code._
 - The right-click > Edit item... text is now truncated if the toolbar item's name is too long (usually if using expressions).
 
 ## Fixes
 
+- When entering a Note Toolbar property (`notetoolbar` by default) that was a string type (vs. list), the “no matching toolbar" notice would only use the first character. This may have also caused problems in the past showing the toolbar if this was a string property. In both cases, the correct toolbar name is now used.
 - Dataview expressions that use the new <code>\{\{dv:</code> notation no longer have extra letters removed.
 
 ## Licensing
@@ -86,5 +87,3 @@ Note Toolbar is now licensed under GPL 3.0 to ensure all contributions remain op
 [v1.17](https://github.com/chrisgurney/obsidian-note-toolbar/releases/tag/1.17.0): Bottom toolbars, quick access to styles, API component improvements
 
 [v1.16](https://github.com/chrisgurney/obsidian-note-toolbar/releases/tag/1.16.0): Custom styles, API (Suggesters + Prompts), toolbar rendering and import improvements
-
-[v1.15](https://github.com/chrisgurney/obsidian-note-toolbar/releases/tag/1.15.0): Dataview, JS Engine, and Templater support
