@@ -277,6 +277,7 @@
             "button-icon-tooltip": "Обрати іконку (за бажанням)",
             "label-preview-edit": "Редагувати панель: {{toolbar}}",
             "label-preview-empty-no-items": "Немає елементів. Редагуйте цю панель для додавання елементів.",
+            "label-review-plugin": "Огляд\u00A0додатку",
             "menu-copy-id": "Копіювати ID розробника",
             "menu-copy-id-notice": "ID елемента скопійовано до буфера обміну.",
             "menu-more-actions": "Додаткові дії...",
@@ -325,6 +326,7 @@
             "key-dismiss": "esc",
             "key-navigate": "↑↓",
             "key-use": "↵",
+            "option-default": "За замовчуванням (використовує зісталення тек)",
             "placeholder": "Введіть назву елемента...",
             "placeholder-toolbar": "{{toolbar}}: Пошук елемента..."
         },
@@ -487,7 +489,8 @@
             "notice-command-error-startup-noname": "Note Toolbar: Один або декілька команд елементів не було увімкнено через порожній напис та підказку.",
             "notice-command-removed": "Команда видалена:\n{{command}}",
             "notice-command-removed_empty": "Команда вилучена для елемента",
-            "notice-command-updated": "Коменда оновлена:\n{{command}}"
+            "notice-command-updated": "Коменда оновлена:\n{{command}}",
+            "tooltip-command-incidator": "Має команду: {{command}}"
         },
         "whats-new": {
             "button-read": "Читати↗",
