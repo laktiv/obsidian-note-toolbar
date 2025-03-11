@@ -1,35 +1,37 @@
 import { Platform, SuggestModal, TFile, getIcon, setIcon, setTooltip } from "obsidian";
 import NoteToolbarPlugin from "main";
 import { calcItemVisToggles, debugLog } from "Utils/Utils";
-import { ItemType, t, ToolbarItemSettings, ToolbarSettings } from "Settings/NoteToolbarSettings";
+import { ErrorBehavior, ItemType, t, ToolbarItemSettings, ToolbarSettings } from "Settings/NoteToolbarSettings";
 import { ToolbarSuggestModal } from "./ToolbarSuggestModal";
 import { renderItemSuggestion } from "../Utils/SettingsUIUtils";
 
 export class ItemSuggestModal extends SuggestModal<ToolbarItemSettings> {
 
-    // private parentEl: HTMLElement;
     public plugin: NoteToolbarPlugin;
     public activeFile: TFile | null;
     public toolbarId: string | undefined;
+    private callback: ((item: ToolbarItemSettings) => void) | undefined;
 
     /**
      * Creates a new modal.
      * @param plugin NoteToolbarPlugin
      * @param activeFile TFile for the active file (so vars can be replaced)
      * @param toolbarId string ID of the toolbar to optionally scope this ItemSuggestModal to
+     * @oaram callback function to call when an item is selected
      */
-	constructor(plugin: NoteToolbarPlugin, activeFile: TFile | null, toolbarId?: string) {
+	constructor(plugin: NoteToolbarPlugin, toolbarId?: string, callback?: (item: ToolbarItemSettings) => void) {
 
         super(plugin.app);
         this.modalEl.addClass("note-toolbar-setting-item-suggester-dialog");
-        // this.parentEl = parentEl;
+
         this.plugin = plugin;
-        this.activeFile = activeFile;
-
+        this.activeFile = plugin.app.workspace.getActiveFile();
         this.toolbarId = toolbarId;
-        let toolbar = this.plugin.settingsManager.getToolbarById(toolbarId ?? null);
+        this.callback = callback;
 
+        let toolbar = this.plugin.settingsManager.getToolbarById(toolbarId ?? null);
         this.setPlaceholder(toolbar ? t('setting.item-suggest-modal.placeholder-toolbar', {toolbar: toolbar.name}) : t('setting.item-suggest-modal.placeholder'));
+
         let instructions = [];
         if (toolbarId) {
             instructions.push(
@@ -92,8 +94,22 @@ export class ItemSuggestModal extends SuggestModal<ToolbarItemSettings> {
                     // ...and is visible on this platform
                     if ((Platform.isMobile && showOnMobile) || (Platform.isDesktop && showOnDesktop)) {
                         // ...and does not have a var link and label/tooltip that resolves to nothing
-                        if (!(this.plugin.hasVars(item.link) && await this.plugin.replaceVars(item.link, this.activeFile) === "") &&
-                            !(this.plugin.hasVars(itemName) && await this.plugin.replaceVars(itemName, this.activeFile) === "")) {
+                        if (
+                            !(
+                                this.plugin.hasVars(item.link) && 
+                                await this.plugin.replaceVars(
+                                    item.link,
+                                    this.activeFile,
+                                    this.activeFile ? ErrorBehavior.Report : ErrorBehavior.Ignore) === ''
+                            ) &&
+                            !(
+                                this.plugin.hasVars(itemName) && 
+                                await this.plugin.replaceVars(
+                                    itemName,
+                                    this.activeFile,
+                                    this.activeFile ? ErrorBehavior.Report : ErrorBehavior.Ignore) === ''
+                            )
+                        ) {
                             itemSuggestions.push(item);
                         }
                     }
@@ -201,7 +217,9 @@ export class ItemSuggestModal extends SuggestModal<ToolbarItemSettings> {
     async onChooseSuggestion(selectedItem: ToolbarItemSettings, event: MouseEvent | KeyboardEvent) {
         debugLog("onChooseSuggestion: ", selectedItem, this.activeFile, event);
         this.close();
-        await this.plugin.handleItemLink(selectedItem, event);
+        (this.callback !== undefined)
+            ? this.callback(selectedItem) 
+            : await this.plugin.handleItemLink(selectedItem, event);
     }
 
 }

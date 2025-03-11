@@ -166,6 +166,12 @@ export enum ToolbarStyle {
 	ItemFocused = 'tbar-item-focused'
 }
 
+export enum ErrorBehavior {
+	Display = 'display',
+	Report = 'report',
+	Ignore = 'ignore'
+}
+
 export interface NoteToolbarSettings {
 	emptyViewToolbar: string | null;
 	export: ExportSettings;
@@ -335,6 +341,7 @@ export interface ToolbarItemSettings {
 	 * @deprecated contexts property as of v1.7 (settings v20240426.1) and moved to visibility property (in migration)
 	 */
 	contexts?: ViewContext[];
+	description?: string;
 	hasCommand: boolean;	
 	icon: string;
 	label: string;
