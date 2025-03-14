@@ -321,6 +321,7 @@
             "instruction-back": "назад",
             "instruction-dismiss": "скасувати",
             "instruction-navigate": "навігація",
+            "instruction-select": "вибрати елемент",
             "instruction-use": "використати",
             "key-back": "⌫ або ←",
             "key-dismiss": "esc",
