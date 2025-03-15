@@ -5,7 +5,7 @@ import { debugLog } from "Utils/Utils";
 
 export default class GalleryManager {
 
-    private items: ToolbarItemSettings[] | undefined;
+    private items: ToolbarItemSettings[] = [];
 
     constructor(private plugin: NoteToolbarPlugin) {
     }
@@ -16,23 +16,22 @@ export default class GalleryManager {
             uuid: '',
             description: item.description?.[lang],
             hasCommand: false,
-            icon: item.icon,
+            icon: item.icon ?? '',
             inGallery: true,
-            label: item.label[lang],
+            label: item.label ? item.label[lang] : '',
             link: item.link ?? '',
             linkAttr: {
-                commandId: item.commandId,
+                commandId: item.commandId ?? '',
                 hasVars: false,
                 type: item.type
             },
-            scriptConfig: item.scriptConfig,
-            tooltip: item.tooltip[lang],
+            scriptConfig: item.scriptConfig ?? {},
+            tooltip: item.tooltip ? item.tooltip[lang] : '',
             visibility: DEFAULT_ITEM_VISIBILITY_SETTINGS
         }));
     }
 
-    getItems(): ToolbarItemSettings[] | undefined {
-        debugLog(this.items);
+    getItems(): ToolbarItemSettings[] {
         return this.items;
     }
 

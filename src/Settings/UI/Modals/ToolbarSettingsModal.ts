@@ -393,10 +393,10 @@ export default class ToolbarSettingsModal extends Modal {
 			})
 			.addExtraButton((btn) => {
 				btn.setIcon('zoom-in')
-					.setTooltip("Find items to add")
+					.setTooltip(t('setting.items.button-find-item'))
 					.onClick(async () => {
-						const modal = new ItemSuggestModal(this.plugin, undefined, async (item: ToolbarItemSettings) => {
-							this.toolbar.items.push(item);
+						const modal = new ItemSuggestModal(this.plugin, undefined, async (selectedItem: ToolbarItemSettings) => {
+							this.plugin.settingsManager.duplicateToolbarItem(this.toolbar, selectedItem);
 							this.toolbar.updated = new Date().toISOString();
 							await this.plugin.settingsManager.save();
 							this.display();

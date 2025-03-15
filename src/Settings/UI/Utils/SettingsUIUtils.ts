@@ -1,5 +1,5 @@
 import { ButtonComponent, getIcon, Platform, setIcon, Setting, setTooltip } from "obsidian";
-import { ItemType, RELEASES_URL, t, ToolbarItemSettings, ToolbarSettings, USER_GUIDE_URL, VIEW_TYPE_WHATS_NEW, WHATSNEW_VERSION } from "Settings/NoteToolbarSettings";
+import { ItemType, LINK_OPTIONS, RELEASES_URL, t, ToolbarItemSettings, ToolbarSettings, USER_GUIDE_URL, VIEW_TYPE_WHATS_NEW, WHATSNEW_VERSION } from "Settings/NoteToolbarSettings";
 import { SettingsManager } from "Settings/SettingsManager";
 import { HelpModal } from "../Modals/HelpModal";
 import NoteToolbarPlugin from "main";
@@ -320,13 +320,15 @@ export function removeFieldError(el: HTMLElement | null) {
  * @param el HEMLElement to render suggestion into
  * @param inputStr string that was used to search for this item
  * @param showMeta boolean to set true if the meta icon should be shown (for Quick Tools)
+ * @param replaceVars boolean to set true if vars should be replaced; false to leave as-is (default)
  */
 export function renderItemSuggestion(
 	plugin: NoteToolbarPlugin, 
 	item: ToolbarItemSettings, 
 	el: HTMLElement, 
 	inputStr: string, 
-	showMeta: boolean = false
+	showMeta: boolean = false,
+	replaceVars: boolean = false
 ) {
 	if (!item) { return }
 	el.addClass("note-toolbar-item-suggestion");
@@ -363,9 +365,14 @@ export function renderItemSuggestion(
 	let title = itemName;
 	// replace variables in labels (or tooltip, if no label set)
 	const activeFile = plugin.app.workspace.getActiveFile();
-	plugin.replaceVars(itemName, activeFile).then((resolvedName: string) => {
-		itemLabelEl.setText(resolvedName);
-	});
+	if (replaceVars) {
+		plugin.replaceVars(itemName, activeFile).then((resolvedName: string) => {
+			itemLabelEl.setText(resolvedName);
+		});
+	}
+	else {
+		itemLabelEl.setText(itemName);
+	}
 	
 	if (showMeta) {
 		let itemMeta = itemNameEl.createSpan();
@@ -407,11 +414,29 @@ export function renderItemSuggestion(
 		itemNoteEl.addClass('note-toolbar-item-suggester-note');
 		itemNoteEl.setText(inputMatch);
 	}
-	// show the description if one is set (for library items)
+	// show the description if one is set
 	if (item.description) {
 		const itemDescEl = el.createDiv();
 		itemDescEl.addClass('note-toolbar-item-suggester-note');
 		itemDescEl.setText(item.description);
+
+		// show the plugin used, or the command ID
+		if ([ItemType.Command, ItemType.Dataview, ItemType.JsEngine, ItemType.Templater].contains(item.linkAttr.type)) {
+			const pluginDescEl = el.createDiv();
+			pluginDescEl.addClass('note-toolbar-item-suggester-note');
+
+			let itemPlugin: string | undefined;
+			let itemType = item.linkAttr.type as keyof typeof LINK_OPTIONS;
+
+			if (itemType === ItemType.Command) {
+				const [commandPluginId] = item.linkAttr.commandId.split(':').map(s => s.trim());
+				itemPlugin = LINK_OPTIONS[commandPluginId as keyof typeof LINK_OPTIONS];
+			} else {
+				itemPlugin = LINK_OPTIONS[itemType];
+			}
+
+			if (itemPlugin) pluginDescEl.setText(t('gallery.label-plugin', { plugin: itemPlugin }));
+		}
 	}
 }
 

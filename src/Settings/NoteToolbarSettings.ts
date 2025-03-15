@@ -39,6 +39,9 @@ export const COMMAND_PREFIX_TBAR = 'open-toolbar-';
 export const COMMAND_PREFIX_ITEM = 'use-toolbar-item-';
 export const VIEW_TYPE_WHATS_NEW = 'ntb-whats-new-view';
 
+export const EMPTY_TOOLBAR_ID = 'EMPTY_TOOLBAR';
+export const GALLERY_DIVIDER_ID = 'GALLERY_DIVIDER';
+
 export enum ComponentType {
 	Icon = 'icon',
 	Label = 'label'
@@ -257,8 +260,8 @@ export const DEFAULT_TOOLBAR_SETTINGS: ToolbarSettings = {
 	updated: new Date().toISOString(),
 };
 
-export const EMPTY_TOOLBAR_SETTINGS: ToolbarSettings = {
-	uuid: 'EMPTY_TOOLBAR',
+export const EMPTY_TOOLBAR: ToolbarSettings = {
+	uuid: EMPTY_TOOLBAR_ID,
 	customClasses: '',
 	defaultItem: null,
 	defaultStyles: [],
@@ -350,6 +353,22 @@ export interface ToolbarItemSettings {
 	scriptConfig?: ScriptConfig;
 	tooltip: string;
 	visibility: Visibility;
+}
+
+export const ITEM_GALLERY_DIVIDER: ToolbarItemSettings = {
+	uuid: GALLERY_DIVIDER_ID,
+	hasCommand: false,
+	icon: '',
+	inGallery: true,
+	label: '',
+	link: '',
+	linkAttr: {
+		commandId: '',
+		hasVars: false,
+		type: ItemType.Separator
+	},
+	tooltip: '',
+	visibility: DEFAULT_ITEM_VISIBILITY_SETTINGS
 }
 
 /**
