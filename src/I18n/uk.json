@@ -40,6 +40,10 @@
             "scripting-disabled": "Для використання цього елемента увімкніть виконування Скриптів у налаштуванні Note Toolbar."
         },
         "js-engine": {
+            "eval-function": "Перевірка JavaScript",
+            "eval-expr": "JavaScript вираз",
+            "eval-expr-description": "JavaScript вираз для перевірки.",
+            "eval-expr-error-required": "⚠️ Помилка: Потрібен вираз JavaScript",
             "exec-function": "Виконати JavaScript",
             "exec-sourcefile": "Файл JavaScript",
             "exec-sourcefile-description": "Файл JavaScript для виконання.",
@@ -120,6 +124,9 @@
         "title-share": "Поширення панелі: {{toolbar}}",
         "warning-share-length": "Деякі браузери можуть не завантажити URL-адреси довжиною, більше ніж 2048 символів.",
         "warning-share-menu": "Ця панель посилається принаймні на одну іншу панель, яку одержувач не отримає."
+            },
+    "gallery": {
+        "label-plugin": "Використовує додаток: 🧩 {{plugin}}"
     },
     "import": {
         "button-add-items": "Додати елементи",
@@ -148,14 +155,6 @@
         "title-import-into": "Додати елементи виноски до панелі: {{toolbar}}",
         "warning-invalid-plugins": "Ця панель використовує додаток, який не встановлено, або вимкнуто:",
         "warning-vars": "Ця панель використовує змінні, які Ви можете редагувати для роботи з вашим сховищем."
-    },
-    "library": {
-        "error-invalid-script-id": "Скрипт не існує для ID: {{scriptId}} ({{pluginId}})",
-        "error-script-required": "⚠️ Помилка: Скрипт не вказано.",
-        "script": "Бібліотека скриптів",
-        "script-description": "Оберіть скрипт із бібліотеки.",
-        "script-function": "Використати скрипт з бібліотеки",
-        "script-option-default": "Оберіть скрипт..."
     },
     "notice": {
         "cta-click": "(клацнути)",
@@ -306,7 +305,7 @@
             "option-separator": "роздільник",
             "option-tooltip-placeholder": "Підказка (за бажанням)",
             "option-uri": "URI",
-            "option-uri-help": "ℹ️ Використовуйте властивості нотаток та вирази в URI.",
+            "option-uri-help": "Використовуйте властивості нотаток та вирази в URI.",
             "option-uri-placehoder": "Адреса сайту, URI, або назва нотатки",
             "option-visibility-component-hidden-platform": "сховати {{component}} на {{platform}}",
             "option-visibility-component-visible-platform": "показати {{component}} на {{platform}}",
@@ -321,7 +320,7 @@
             "instruction-back": "назад",
             "instruction-dismiss": "скасувати",
             "instruction-navigate": "навігація",
-            "instruction-select": "вибрати елемент",
+            "instruction-select": "обрати елемент",
             "instruction-use": "використати",
             "key-back": "⌫ або ←",
             "key-dismiss": "esc",
@@ -334,7 +333,9 @@
         "items": {
             "button-add-break-tooltip": "Додати розрив",
             "button-add-separator-tooltip": "Додати роздільник",
-            "button-new-item": "+ Додати елемент",
+            "button-find-item": "Знайти",
+            "button-find-item-tooltip": "Знайдіть існуючий елемент для додавання до панелі.",
+            "button-new-item": "Додати",
             "button-new-item-tooltip": "Додавання нового елемента до панелі",
             "description": "Додавайте до панелі елементи по черзі",
             "label-empty-no-items": "Немає елементів панелі.",
@@ -403,7 +404,7 @@
             "notice-defaultitem-invalid": "Недійсний елемент за замовчуванням для плаваючої кнопки. Перевірте налаштування панелі.",
             "option-bottom": "Внизу нотатки",
             "option-defaultitem": "Типовий елемент Плаваючої кнопки",
-            "option-defaultitem-description": "Замість меню панелі буде відображено цей пункт як кнопку. Інші пункти з’являються як меню по натисканю правой кнопки мишки (нажати на мобільному).",
+            "option-defaultitem-description": "Це буде як кнопка замість меню панелі. Інші пункти по натисканню правой кнопки мишки (зажати на мобільному).",
             "option-defaultitem-error-invalid": "Недійсний елемент панелі",
             "option-defaultitem-placeholder": "Елемент...",
             "option-fabl": "Плаваюча кнопка: Ліворуч",
