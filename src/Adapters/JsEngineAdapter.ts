@@ -14,16 +14,15 @@ import { learnMoreFr } from "Settings/UI/Utils/SettingsUIUtils";
 export default class JsEngineAdapter extends Adapter {
 
     readonly FUNCTIONS: AdapterFunction[] = [
-        // TODO: for possible future use
-        // {
-        //     function: this.evaluate,
-        //     label: "Evaluate JavaScript",
-        //     description: "",
-        //     parameters: [
-        //         { parameter: 'expression', label: "JavaScript expression", description: "JavaScript expression to evaluate", type: SettingType.TextArea, required: true },
-        //         { parameter: 'outputContainer', label: t('adapter.outputcontainer'), description: t('adapter.outputcontainer-description'), type: SettingType.Text, required: false }
-        //     ]
-        // },
+        {
+            function: this.evaluate,
+            label: t('adapter.js-engine.eval-function'),
+            description: "",
+            parameters: [
+                { parameter: 'expression', label: t('adapter.js-engine.eval-expr'), description: t('adapter.js-engine.eval-expr-description'), type: SettingType.TextArea, required: true },
+                { parameter: 'outputContainer', label: t('adapter.outputcontainer'), description: t('adapter.outputcontainer-description'), type: SettingType.Text, required: false }
+            ]
+        },
         {
             function: this.exec,
             label: t('adapter.js-engine.exec-function'),
@@ -66,17 +65,22 @@ export default class JsEngineAdapter extends Adapter {
         }
 
         switch (config.pluginFunction) {
+            case 'evaluate':
+                result = config.expression
+                    ? await this.evaluate(config.expression, containerEl)
+                    : t('adapter.js-engine.eval-expr-error-required');
+                break;
             // internal function for inline evaluations in which errors should be reported
             case 'evaluateInline':
                 result = config.expression
                     ? await this.evaluate(config.expression, containerEl, ErrorBehavior.Report)
-                    : "Error: A JavaScript expression is required";
+                    : t('adapter.js-engine.eval-expr-error-required');
                 break;
             // internal function for inline evaluations in which errors can be ignored
             case 'evaluateIgnore':
                 result = config.expression
                     ? await this.evaluate(config.expression, containerEl, ErrorBehavior.Ignore)
-                    : "Error: A JavaScript expression is required";
+                    : t('adapter.js-engine.eval-expr-error-required');
                 break;
             case 'exec':
                 result = config.sourceFile

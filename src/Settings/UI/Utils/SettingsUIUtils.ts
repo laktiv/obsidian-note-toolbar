@@ -36,13 +36,7 @@ export function createOnboardingMessageEl(
 					plugin.settingsManager.save();
 				});
 			button.extraSettingsEl.addClass('note-toolbar-setting-plugin-onboarding-close');
-			button.extraSettingsEl.tabIndex = 0;
-			plugin.registerDomEvent(button.extraSettingsEl, 'keydown', (e: KeyboardEvent) => {
-				if (e.key === 'Enter' || e.key === ' ') {
-					e.preventDefault();
-					button.extraSettingsEl.click();
-				}
-			});
+			handleKeyClick(this.plugin, button.extraSettingsEl);
 		});
 	return setting.settingEl;
 }
@@ -244,6 +238,19 @@ export function getStyleDisclaimersFr(disclaimers: {[key: string]: string}[], st
 export function getValueForKey(dict: {[key: string]: string}[], key: string): string {
 	const option = dict.find(option => key in option);
 	return option ? Object.values(option)[0] : '';
+}
+
+export function handleKeyClick(plugin: NoteToolbarPlugin, el: HTMLElement) {
+	el.tabIndex = 0;
+	plugin.registerDomEvent(
+		el, 'keydown', (evt) => {
+			switch (evt.key) {
+				case 'Enter':
+				case ' ':
+					evt.preventDefault();
+					el.click();
+			}
+		});
 }
 
 export function iconTextFr(icon: string, text: string): DocumentFragment {

@@ -1,6 +1,6 @@
 import { App, ButtonComponent, Modal, Notice, Platform, Setting, ToggleComponent, debounce, getIcon, setIcon, setTooltip } from 'obsidian';
 import { arraymove, debugLog, moveElement, getUUID } from 'Utils/Utils';
-import { emptyMessageFr, learnMoreFr, createToolbarPreviewFr, displayHelpSection, showWhatsNewIfNeeded, removeFieldError, setFieldError, createOnboardingMessageEl } from "../Utils/SettingsUIUtils";
+import { emptyMessageFr, learnMoreFr, createToolbarPreviewFr, displayHelpSection, showWhatsNewIfNeeded, removeFieldError, setFieldError, createOnboardingMessageEl, iconTextFr, handleKeyClick } from "../Utils/SettingsUIUtils";
 import NoteToolbarPlugin from 'main';
 import { ItemType, POSITION_OPTIONS, PositionType, ToolbarItemSettings, ToolbarSettings, t, DEFAULT_ITEM_VISIBILITY_SETTINGS, SettingFieldItemMap, COMMAND_PREFIX_TBAR } from 'Settings/NoteToolbarSettings';
 import { NoteToolbarSettingTab } from 'Settings/UI/NoteToolbarSettingTab';
@@ -227,17 +227,8 @@ export default class ToolbarSettingsModal extends Modal {
 							this.display();
 						}
 					});
-				})
-				.extraSettingsEl.tabIndex = 0;
-				this.plugin.registerDomEvent(
-					cb.extraSettingsEl, 'keydown', (e) => {
-						switch (e.key) {
-							case "Enter":
-							case " ":
-								e.preventDefault();
-								cb.extraSettingsEl.click();
-						}
-					});
+				});
+				handleKeyClick(this.plugin, cb.extraSettingsEl);
 			});
 
 		if (this.toolbar.items.length > 8) {
@@ -254,18 +245,9 @@ export default class ToolbarSettingsModal extends Modal {
 							this.itemListOpen ? heading?.setText(t('setting.items.name')) : heading?.setText(t('setting.items.name-with-count', { count: this.toolbar.items.length }));
 							cb.setTooltip(this.itemListOpen ? t('setting.button-collapse-tooltip') : t('setting.button-expand-tooltip'));
 						}
-					})
-					.extraSettingsEl.tabIndex = 0;
+					});
 					cb.extraSettingsEl.addClass('note-toolbar-setting-item-expand');
-					this.plugin.registerDomEvent(
-						cb.extraSettingsEl, 'keydown', (e) => {
-							switch (e.key) {
-								case "Enter":
-								case " ":
-									e.preventDefault();
-									cb.extraSettingsEl.click();
-							}
-						});
+					handleKeyClick(this.plugin, cb.extraSettingsEl);
 				});
 		}
 
@@ -376,26 +358,23 @@ export default class ToolbarSettingsModal extends Modal {
 				icon ? btn.extraSettingsEl.appendChild(icon) : undefined;
 				btn.setTooltip(t('setting.items.button-add-separator-tooltip'))
 					.onClick(async () => this.addItemHandler(itemsSortableContainer, ItemType.Separator));
+				handleKeyClick(this.plugin, btn.extraSettingsEl);
 			})
 			.addExtraButton((btn) => {
 				btn.setIcon('lucide-corner-down-left')
 					.setTooltip(t('setting.items.button-add-break-tooltip'))
 					.onClick(async () => this.addItemHandler(itemsSortableContainer, ItemType.Break));
+				handleKeyClick(this.plugin, btn.extraSettingsEl);
 			});
 		itemsListButtonContainer.appendChild(formattingButtons);
 
 		new Setting(itemsListButtonContainer)
 			.addButton((btn) => {
-				btn.setTooltip(t('setting.items.button-new-item-tooltip'))
-					.setButtonText(t('setting.items.button-new-item'))
-					.setCta()
-					.onClick(async () => this.addItemHandler(itemsSortableContainer, ItemType.Command));
-			})
-			.addExtraButton((btn) => {
-				btn.setIcon('zoom-in')
-					.setTooltip(t('setting.items.button-find-item'))
+				btn.setTooltip(t('setting.items.button-find-item-tooltip'))
 					.onClick(async () => {
 						const modal = new ItemSuggestModal(this.plugin, undefined, async (selectedItem: ToolbarItemSettings) => {
+							selectedItem.inGallery = false;
+							selectedItem.description = undefined;
 							this.plugin.settingsManager.duplicateToolbarItem(this.toolbar, selectedItem);
 							this.toolbar.updated = new Date().toISOString();
 							await this.plugin.settingsManager.save();
@@ -403,16 +382,13 @@ export default class ToolbarSettingsModal extends Modal {
 						});
 						modal.open();
 					});
-				btn.extraSettingsEl.tabIndex = 0;
-				this.plugin.registerDomEvent(
-					btn.extraSettingsEl, 'keydown', (e) => {
-						switch (e.key) {
-							case "Enter":
-							case " ":
-								e.preventDefault();
-								btn.extraSettingsEl.click();
-						}
-					});
+				btn.buttonEl.setText(iconTextFr('zoom-in', t('setting.items.button-find-item')));
+			})
+			.addButton((btn) => {
+				btn.setTooltip(t('setting.items.button-new-item-tooltip'))
+					.setCta()
+					.onClick(async () => this.addItemHandler(itemsSortableContainer, ItemType.Command));
+				btn.buttonEl.setText(iconTextFr('plus', t('setting.items.button-new-item')));
 			});
 
 		itemsListContainer.appendChild(itemsListButtonContainer);
@@ -575,14 +551,14 @@ export default class ToolbarSettingsModal extends Modal {
 		//
 
 		this.plugin.registerDomEvent(
-			itemPreview, 'keydown', (e: KeyboardEvent) => {
+			itemPreview, 'keydown', async (e: KeyboardEvent) => {
 				switch (e.key) {
 					case "d":
 						const modifierPressed = (Platform.isWin || Platform.isLinux) ? e?.ctrlKey : e?.metaKey;
 						if (modifierPressed) {
-							const newItemUuid = this.plugin.settingsManager.duplicateToolbarItem(this.toolbar, toolbarItem, true);
+							const newItem = await this.plugin.settingsManager.duplicateToolbarItem(this.toolbar, toolbarItem, true);
 							this.plugin.settingsManager.save();
-							this.display(`.note-toolbar-sortablejs-list > div[${SettingsAttr.ItemUuid}="${newItemUuid}"] > .note-toolbar-setting-item-preview-container > .note-toolbar-setting-item-preview`);
+							this.display(`.note-toolbar-sortablejs-list > div[${SettingsAttr.ItemUuid}="${newItem.uuid}"] > .note-toolbar-setting-item-preview-container > .note-toolbar-setting-item-preview`);
 						}
 						break;
 					case "Enter":
@@ -1037,7 +1013,7 @@ export default class ToolbarSettingsModal extends Modal {
 		}, 0);
 		return [mappingCount, itemCount];
 	}
-
+	
 	/**
 	 * Renders/Re-renders the preview for the given item in the item list.
 	 * @param toolbarItem ToolbarItemSettings to display preview for
