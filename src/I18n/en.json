@@ -127,7 +127,10 @@
     },
     "gallery": {
         "label-plugin": "Uses plugin: 🧩 {{plugin}}",
-        "label-suggestions": "SUGGESTIONS FROM ITEM GALLERY"
+        "label-suggestions": "SUGGESTIONS FROM ITEM GALLERY",
+        "select-plugin-placeholder": "Select plugin to use...",
+        "select-plugin-suggestion": "{{plugin}}",
+        "select-plugin-suggestion-not-enabled": "{{plugin}} ⚠️ Not enabled or installed"
     },
     "import": {
         "button-add-items": "Add items",
@@ -176,7 +179,12 @@
         "swap-toolbar-title": "This note will be changed"
     },
     "plugin": {
-        "name": "Note Toolbar"
+        "daily-notes": "Daily\u00A0Notes",
+        "dataview": "Dataview",
+        "js-engine": "JS\u00A0Engine",
+        "note-toolbar": "Note\u00A0Toolbar",
+        "sync": "Obsidian\u00A0Sync",
+        "templater-obsidian": "Templater"
     },
     "setting": {
         "button-cancel": "Cancel",
@@ -273,6 +281,8 @@
             "placeholder": "Search for an icon..."
         },
         "item": {
+            "button-close": "Close",
+            "button-close-description": "Closes and saves this item",            
             "button-duplicate-tooltip": "Duplicate this item",
             "button-icon-tooltip": "Select icon (optional)",
             "label-preview-edit": "Edit toolbar: {{toolbar}}",

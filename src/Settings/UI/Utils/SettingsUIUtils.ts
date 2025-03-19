@@ -1,5 +1,5 @@
 import { ButtonComponent, getIcon, Platform, setIcon, Setting, setTooltip } from "obsidian";
-import { ItemType, LINK_OPTIONS, RELEASES_URL, t, ToolbarItemSettings, ToolbarSettings, USER_GUIDE_URL, VIEW_TYPE_WHATS_NEW, WHATSNEW_VERSION } from "Settings/NoteToolbarSettings";
+import { ItemType, RELEASES_URL, t, ToolbarItemSettings, ToolbarSettings, USER_GUIDE_URL, VIEW_TYPE_WHATS_NEW, WHATSNEW_VERSION } from "Settings/NoteToolbarSettings";
 import { SettingsManager } from "Settings/SettingsManager";
 import { HelpModal } from "../Modals/HelpModal";
 import NoteToolbarPlugin from "main";
@@ -172,7 +172,7 @@ export function displayHelpSection(plugin: NoteToolbarPlugin, settingsDiv: HTMLE
 		);
 
 		new Setting(settingsDiv)
-			.setName(t('plugin.name') + ' • v' + plugin.manifest.version)
+			.setName(t('plugin.note-toolbar') + ' • v' + plugin.manifest.version)
 			.setDesc(t('setting.help.description'))
 			.addButton((button: ButtonComponent) => {
 				button
@@ -427,24 +427,37 @@ export function renderItemSuggestion(
 		itemDescEl.addClass('note-toolbar-item-suggester-note');
 		itemDescEl.setText(item.description);
 
-		// show the plugin used, or the command ID
-		if ([ItemType.Command, ItemType.Dataview, ItemType.JsEngine, ItemType.Templater].contains(item.linkAttr.type)) {
-			const pluginDescEl = el.createDiv();
-			pluginDescEl.addClass('note-toolbar-item-suggester-note');
-
-			let itemPlugin: string | undefined;
-			let itemType = item.linkAttr.type as keyof typeof LINK_OPTIONS;
-
-			if (itemType === ItemType.Command) {
-				const [commandPluginId] = item.linkAttr.commandId.split(':').map(s => s.trim());
-				itemPlugin = LINK_OPTIONS[commandPluginId as keyof typeof LINK_OPTIONS];
-			} else {
-				itemPlugin = LINK_OPTIONS[itemType];
+		// show the plugin(s) supported, or the command ID used
+		if ([ItemType.Command, ItemType.Dataview, ItemType.JsEngine, ItemType.Plugin, ItemType.Templater].contains(item.linkAttr.type)) {
+			let itemPluginText = getPluginNames(item);
+			if (itemPluginText) {
+				const pluginDescEl = el.createDiv();
+				pluginDescEl.addClass('note-toolbar-item-suggester-note');			
+				pluginDescEl.setText(t('gallery.label-plugin', { plugin: itemPluginText }));
 			}
-
-			if (itemPlugin) pluginDescEl.setText(t('gallery.label-plugin', { plugin: itemPlugin }));
 		}
 	}
+}
+
+/**
+ * Gets a list of plugin names required by this item, derived from the commandId or plugin property.
+ * @param item ToolbarItemSettings to get plugin list from
+ * @returns list of plugin names
+ */
+export function getPluginNames(item: ToolbarItemSettings): string | undefined {
+	let itemPluginType;
+	if (item.linkAttr.type === ItemType.Plugin) {
+		itemPluginType = (Array.isArray(item.plugin) ? item.plugin : [item.plugin]);
+	}
+	else if (item.linkAttr.type === ItemType.Command) {
+		// get the command ID; we can ignore built-in commands
+		const [commandPluginId] = item.linkAttr.commandId.split(':').map(s => s.trim());
+		const ignoreCommands = ['bookmarks', 'editor', 'global-search', 'link', 'markdown', 'note-toolbar', 'theme'];
+		itemPluginType = !ignoreCommands.includes(commandPluginId) ? [commandPluginId] : [];
+	}
+	// replace known commands with user-friendly strings (if supported), and create a list
+	if (itemPluginType) return itemPluginType.map(p => t(`plugin.${p}`)).join(', ')
+	else return undefined;
 }
 
 /**

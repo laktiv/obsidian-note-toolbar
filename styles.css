@@ -2241,12 +2241,100 @@ input[type="text"].note-toolbar-setting-error,
     margin-top: 0.5em;
     margin-bottom: 0.5em;
     color: var(--text-muted);
-    font-size: var(--font-small);
+    font-size: var(--font-ui-small);
+    font-weight: var(--font-semibold);
 }
 
 .note-toolbar-gallery-item-suggestion {
     box-shadow: inset 0 0 0 2px var(--background-modifier-border);
     margin-bottom: 0.5em;
+}
+
+.note-toolbar-gallery-view-items-container {
+    align-items: stretch;
+    padding-bottom: 1em;
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    position: relative;
+    scroll-behavior: smooth;
+    &:not(:last-child) {
+        border-block-end: solid 1px var(--background-modifier-border);
+    }
+}
+
+.note-toolbar-gallery-view-plugin-note {
+    display: flex;
+    gap: 0.5em;
+    & p {
+        margin: 0;
+    }
+}
+
+.note-toolbar-gallery-view-cat-description {
+    color: var(--text-muted);
+}
+
+.note-toolbar-gallery-view-item {
+    background-color: var(--background-modifier-border);
+    box-shadow: var(--input-shadow);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 140px;
+    padding: 16px;
+    position: relative;
+    width: 200px;
+    &:focus-visible {
+        border-radius: var(--input-radius);
+        box-shadow: inset 0 0 0 1px var(--background-modifier-border);
+        box-shadow: inset 0 0 0 2px var(--background-modifier-border-focus);
+    }
+    &:hover {
+        background-color: var(--background-modifier-border-focus);
+    }
+    & h3 {
+        font-size: var(--font-normal);
+        margin: 0;
+        margin-top: 46px; /* icon height */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    & .note-toolbar-gallery-view-item-icon {
+        align-items: center;
+        display: flex;
+        height: 30px;
+        justify-content: center;
+        left: 16px;
+        position: absolute;
+        top: 16px;
+        width: 30px;
+        & svg {
+            height: 30px;        
+            width: 30px;
+        }
+    }
+    & p {
+        font-size: var(--font-ui-small);
+        margin: 0;
+    }
+    & p.note-toolbar-gallery-view-item-description {
+        color: var(--text-muted);
+    }
+    & p.note-toolbar-gallery-view-item-plugins {
+        display: flex;
+        vertical-align: middle;
+        gap: 0.25em;
+        margin-top: 0.5em;
+        & svg {
+            height: var(--font-ui-small);
+            width: var(--font-ui-small);
+        }
+    }
 }
 
 .note-toolbar-icon-suggestion {
@@ -2625,7 +2713,8 @@ input[type="text"].note-toolbar-setting-error,
             .is-phone & {
                 width: inherit !important;
             }
-            & select[class="dropdown"] {
+            & select[class="dropdown"], 
+            & select[class="dropdown"]:active {
                 border-radius: 2em;
                 font-size: var(--metadata-input-font-size);
             }

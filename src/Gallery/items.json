@@ -1,5 +1,29 @@
 [
     {
+        "id": "attach-file",
+        "commandId": "editor:attach-file",
+        "description": { "en": "Insert a file attachment." },
+        "icon": "paperclip",
+        "tooltip": { "en": "Insert attachment" },
+        "type": "command"
+    },
+    {
+        "id": "bookmarks-open",
+        "commandId": "bookmarks:open",
+        "description": { "en": "Opens the bookmarks sidebar." },
+        "icon": "bookmark",
+        "tooltip": { "en": "Show bookmarks" },
+        "type": "command"
+    },
+    {
+        "id": "clear-formatting",
+        "commandId": "editor:clear-formatting",
+        "description": { "en": "Remove all text formatting." },
+        "icon": "eraser",
+        "tooltip": { "en": "Clear formatting" },
+        "type": "command"
+    },
+    {
         "id": "copy",
         "description": { "en": "Copies the selected text to the clipboard." },
         "icon": "clipboard-copy",
@@ -7,6 +31,14 @@
         "script": "const e = app.workspace.activeLeaf.view?.editor; try { await window.navigator.clipboard.writeText(e.getSelection()); app.commands.executeCommandById('editor:focus'); } catch (error) { console.error('Copy failed:', error); }",
         "tooltip": { "en": "Copy" },
         "type": "plugin"
+    },
+    {
+        "id": "copy-obsidian-url",
+        "commandId": "workspace:copy-url",
+        "description": { "en": "Copy the Obsidian URL for the current note to the clipboard." },
+        "icon": "share",
+        "tooltip": { "en": "Copy Obsidian URL" },
+        "type": "command"
     },
     {
         "id": "cut",
@@ -18,6 +50,78 @@
         "type": "plugin"
     },
     {
+        "id": "cycle-list-checklist",
+        "commandId": "editor:cycle-list-checklist",
+        "description": { "en": "Changes to bullet, checkbox, or unchecked." },
+        "icon": "check-square",
+        "tooltip": { "en": "Cycle bullet/checkbox" },
+        "type": "command"
+    },
+    {
+        "id": "daily-notes-prev",
+        "commandId": "daily-notes:goto-prev",
+        "description": { "en": "Go to the previous daily note." },
+        "icon": "arrow-left",
+        "tooltip": { "en": "Previous daily note" },
+        "type": "command"
+    },
+    {
+        "id": "daily-notes-today",
+        "commandId": "daily-notes",
+        "description": { "en": "Go to today's daily note." },
+        "icon": "calendar-check",
+        "tooltip": { "en": "Today's daily note" },
+        "type": "command"
+    },
+    {
+        "id": "daily-notes-next",
+        "commandId": "daily-notes:goto-next",
+        "description": { "en": "Go to the next daily note." },
+        "icon": "arrow-right",
+        "tooltip": { "en": "Next daily note" },
+        "type": "command"
+    },
+    {
+        "id": "editor-toggle-preview",
+        "commandId": "markdown:toggle-preview",
+        "description": { "en": "Toggle the reading view of the note." },
+        "icon": "book-open",
+        "tooltip": { "en": "Toggle reading view" },
+        "type": "command"
+    },
+    {
+        "id": "editor-toggle-source",
+        "commandId": "editor:toggle-source",
+        "description": { "en": "Toggle between Live Preview and Source mode." },
+        "icon": "code-2",
+        "tooltip": { "en": "Toggle Live Preview/Source mode" },
+        "type": "command"
+    },
+    {
+        "id": "global-search-open",
+        "commandId": "global-search:open",
+        "description": { "en": "Search across all files." },
+        "icon": "search",
+        "tooltip": { "en": "Search in all files" },
+        "type": "command"
+    },
+    {
+        "id": "go-home",
+        "description": { "en": "Go to my home note. Enter your home note in the URL." },
+        "icon": "home",
+        "tooltip": { "en": "Home" },
+        "url": "",
+        "type": "link"
+    },
+    {
+        "id": "go-up",
+        "description": { "en": "Navigate upwards. Uses your note's \"up\" property." },
+        "icon": "arrow-up-left",
+        "tooltip": { "en": "Go up" },
+        "url": "{{prop_up}}",
+        "type": "link"
+    },
+    {
         "id": "indent",
         "description": { "en": "Increases indentation on the current line." },
         "icon": "indent-increase",
@@ -27,17 +131,89 @@
         "type": "plugin"
     },
     {
-        "id": "insert-template",
-        "commandId": "templater-obsidian:insert-templater",
-        "description": { "en": "Inserts the chosen template." },
-        "icon": "templater-icon",
-        "tooltip": { "en": "Insert template" },
+        "id": "insert-callout",
+        "commandId": "editor:insert-callout",
+        "description": { "en": "Insert a callout block." },
+        "icon": "quote",
+        "tooltip": { "en": "Insert callout" },
+        "type": "command"
+    },
+    {
+        "id": "insert-codeblock",
+        "commandId": "editor:insert-codeblock",
+        "description": { "en": "Insert a code block." },
+        "icon": "code-square",
+        "tooltip": { "en": "Insert code block" },
+        "type": "command"
+    },
+    {
+        "id": "insert-embed",
+        "commandId": "editor:insert-embed",
+        "description": { "en": "Add an embedded file or note." },
+        "icon": "sticky-note",
+        "tooltip": { "en": "Add embed" },
+        "type": "command"
+    },
+    {
+        "id": "insert-horizontal-rule",
+        "commandId": "editor:insert-horizontal-rule",
+        "description": { "en": "Insert a horizontal rule to separate sections." },
+        "icon": "line-horizontal",
+        "tooltip": { "en": "Insert horizontal rule." },
+        "type": "command"
+    },
+    {
+        "id": "insert-link",
+        "commandId": "editor:insert-link",
+        "description": { "en": "Insert a markdown link." },
+        "icon": "link",
+        "tooltip": { "en": "Insert markdown link" },
+        "type": "command"
+    },
+    {
+        "id": "insert-mathblock",
+        "commandId": "editor:insert-mathblock",
+        "description": { "en": "Insert a math block." },
+        "icon": "sigma-square",
+        "tooltip": { "en": "Insert math block" },
+        "type": "command"
+    },
+    {
+        "id": "insert-table",
+        "commandId": "editor:insert-table",
+        "description": { "en": "Insert a table." },
+        "icon": "table",
+        "tooltip": { "en": "Insert table" },
+        "type": "command"
+    },
+    {
+        "id": "insert-tag",
+        "commandId": "editor:insert-tag",
+        "description": { "en": "Add a tag to the note." },
+        "icon": "tag",
+        "tooltip": { "en": "Add tag" },
+        "type": "command"
+    },
+    {
+        "id": "insert-wikilink",
+        "commandId": "editor:insert-wikilink",
+        "description": { "en": "Add an internal link." },
+        "icon": "brackets",
+        "tooltip": { "en": "Add internal link" },
+        "type": "command"
+    },
+    {
+        "id": "new-note",
+        "commandId": "file-explorer:new-file",
+        "description": { "en": "Create a new note." },
+        "icon": "file",
+        "tooltip": { "en": "New note" },
         "type": "command"
     },
     {
         "id": "next-file",
         "description": {
-            "en": "Opens the next file in the folder, sorted A-Z. Opens the first file in the folder when the last file is reached."
+            "en": "Opens the next file in the folder, sorted A-Z. Loops back to the first file."
         },
         "icon": "square-arrow-right",
         "plugin": ["dataview", "js-engine"],
@@ -46,9 +222,97 @@
         "type": "plugin"
     },
     {
+        "id": "note-toolbar-quick-toolbars",
+        "commandId": "note-toolbar:open-toolbar-suggester",
+        "description": { "en": "Opens a window with access to all of your toolbars." },
+        "icon": "package-search",
+        "tooltip": { "en": "Note Toolbar: Quick Toolbars" },
+        "type": "command"
+    },
+    {
+        "id": "note-toolbar-quick-tools",
+        "commandId": "note-toolbar:open-item-suggester",
+        "description": { "en": "Opens a window with access to all of your toolbar items." },
+        "icon": "rocket",
+        "tooltip": { "en": "Note Toolbar: Quick Tools" },
+        "type": "command"
+    },
+    {
+        "id": "note-toolbar-tbar-settings",
+        "commandId": "note-toolbar:open-toolbar-settings",
+        "description": { "en": "Open the active toolbar's settings to customize your toolbar." },
+        "icon": "settings-2",
+        "tooltip": { "en": "Toolbar settings" },
+        "type": "command"
+    },
+    {
+        "id": "note-toolbar-toggle-properties",
+        "commandId": "note-toolbar:toggle-properties",
+        "description": { "en": "Toggle the visibility of note properties." },
+        "icon": "table-properties",
+        "tooltip": { "en": "Toggle Properties" },
+        "type": "command"
+    },
+    {
+        "id": "note-toolbar-user-guide",
+        "description": { "en": "Access the Note Toolbar User Guide for help and tips." },
+        "icon": "book",
+        "tooltip": { "en": "Note Toolbar User Guide" },
+        "url": "https://github.com/chrisgurney/obsidian-note-toolbar/wiki",
+        "type": "link"
+    },
+    {
+        "id": "obsidian-discord",
+        "description": { "en": "Opens the Obsidian Discord community." },
+        "icon": "discord",
+        "tooltip": { "en": "Obsidian Discord" },
+        "url": "https://discord.gg/obsidianmd",
+        "type": "link"
+    },
+    {
+        "id": "obsidian-forum",
+        "description": { "en": "Opens the Obsidian forum for discussions and support." },
+        "icon": "message-circle",
+        "tooltip": { "en": "Obsidian forum" },
+        "url": "https://forum.obsidian.md/",
+        "type": "link"
+    },
+    {
+        "id": "obsidian-help-site",
+        "description": { "en": "Opens the official Obsidian help site." },
+        "icon": "book",
+        "tooltip": { "en": "Obsidian help site" },
+        "url": "https://help.obsidian.md/",
+        "type": "link"
+    },
+    {
+        "id": "obsidian-markdown-reference",
+        "description": { "en": "Opens the Obsidian Markdown formatting guide." },
+        "icon": "book-down",
+        "tooltip": { "en": "Markdown reference" },
+        "url": "https://help.obsidian.md/Editing+and+formatting/Basic+formatting+syntax",
+        "type": "link"
+    },
+    {
+        "id": "obsidian-subreddit",
+        "description": { "en": "Opens the Obsidian community on Reddit." },
+        "icon": "messages-square",
+        "tooltip": { "en": "Obsidian subreddit" },
+        "url": "https://www.reddit.com/r/ObsidianMD/",
+        "type": "link"
+    },
+    {
+        "id": "obsidian-sync-version-history",
+        "commandId": "sync:view-version-history",
+        "description": { "en": "View the version history for the current file." },
+        "icon": "file-clock",
+        "tooltip": { "en": "Version history" },
+        "type": "command"
+    },
+    {
         "id": "previous-file",
         "description": {
-            "en": "Opens the previous file in the folder, sorted A-Z. Opens the last file in the folder when the first file is reached."
+            "en": "Opens the previous file in the folder, sorted A-Z. Loops back to the last file."
         },
         "icon": "square-arrow-left",
         "plugin": ["dataview", "js-engine"],
@@ -66,11 +330,43 @@
         "type": "plugin"
     },
     {
-        "id": "toggle-pin",
+        "id": "pin",
         "commandId": "workspace:toggle-pin",
         "description": { "en": "Pins or unpins the current note, preventing it from being replaced when opening new notes." },
         "icon": "pin",
         "tooltip": { "en": "Toggle pin" },
+        "type": "command"
+    },
+    {
+        "id": "search-replace-open",
+        "commandId": "editor:open-search-replace",
+        "description": { "en": "Open search and replace for the current file." },
+        "icon": "file-search",
+        "tooltip": { "en": "Search & replace in current file" },
+        "type": "command"
+    },
+    {
+        "id": "settings-open",
+        "commandId": "app:open-settings",
+        "description": { "en": "Open Obsidian's settings." },
+        "icon": "settings",
+        "tooltip": { "en": "Open settings" },
+        "type": "command"
+    },
+    {
+        "id": "templater-insert-template",
+        "commandId": "templater-obsidian:insert-templater",
+        "description": { "en": "Inserts the chosen template." },
+        "icon": "templater-icon",
+        "tooltip": { "en": "Insert template" },
+        "type": "command"
+    },
+    {
+        "id": "templater-new-note-from-template",
+        "commandId": "templater-obsidian:create-new-note-from-template",
+        "description": { "en": "Create a new note from a template." },
+        "icon": "percent-square",
+        "tooltip": { "en": "New note from template" },
         "type": "command"
     },
     {
@@ -81,6 +377,134 @@
         "script": "app.workspace.activeLeaf.view?.editor.redo()",
         "tooltip": { "en": "Redo" },
         "type": "plugin"
+    },
+    {
+        "id": "swap-line-down",
+        "commandId": "editor:swap-line-down",
+        "description": { "en": "Move the current line down." },
+        "icon": "corner-right-down",
+        "tooltip": { "en": "Move line down" },
+        "type": "command"
+    },
+    {
+        "id": "swap-line-up",
+        "commandId": "editor:swap-line-up",
+        "description": { "en": "Move the current line up." },
+        "icon": "corner-right-up",
+        "tooltip": { "en": "Move line up" },
+        "type": "command"
+    },
+    {
+        "id": "theme-switch",
+        "commandId": "theme:switch",
+        "description": { "en": "Open the Obsidian theme switcher." },
+        "icon": "venetian-mask",
+        "tooltip": { "en": "Change theme" },
+        "type": "command"
+    },
+    {
+        "id": "theme-use-dark",
+        "commandId": "theme:use-dark",
+        "description": { "en": "Enable dark mode." },
+        "icon": "moon",
+        "tooltip": { "en": "Use dark mode" },
+        "type": "command"
+    },
+    {
+        "id": "theme-use-light",
+        "commandId": "theme:use-light",
+        "description": { "en": "Enable light mode." },
+        "icon": "sun",
+        "tooltip": { "en": "Use light mode" },
+        "type": "command"
+    },
+    {
+        "id": "toggle-blockquote",
+        "commandId": "editor:toggle-blockquote",
+        "description": { "en": "Apply or remove blockquote formatting." },
+        "icon": "text-quote",
+        "tooltip": { "en": "Toggle blockquote" },
+        "type": "command"
+    },
+    {
+        "id": "toggle-bold",
+        "commandId": "editor:toggle-bold",
+        "description": { "en": "Apply or remove bold formatting." },
+        "icon": "bold",
+        "tooltip": { "en": "Toggle bold" },
+        "type": "command"
+    },
+    {
+        "id": "toggle-bullet-list",
+        "commandId": "editor:toggle-bullet-list",
+        "description": { "en": "Apply or remove bullet list formatting." },
+        "icon": "list",
+        "tooltip": { "en": "Toggle bullet" },
+        "type": "command"
+    },
+    {
+        "id": "toggle-checklist-status",
+        "commandId": "editor:toggle-checklist-status",
+        "description": { "en": "Toggle the status of checklist items." },
+        "icon": "list-checks",
+        "tooltip": { "en": "Toggle checkbox status" },
+        "type": "command"
+    },
+    {
+        "id": "toggle-code",
+        "commandId": "editor:toggle-code",
+        "description": { "en": "Apply or remove inline code formatting." },
+        "icon": "code",
+        "tooltip": { "en": "Toggle code" },
+        "type": "command"
+    },
+    {
+        "id": "toggle-comments",
+        "commandId": "editor:toggle-comments",
+        "description": { "en": "Add or remove comments." },
+        "icon": "percent",
+        "tooltip": { "en": "Toggle comment" },
+        "type": "command"
+    },
+    {
+        "id": "toggle-highlight",
+        "commandId": "editor:toggle-highlight",
+        "description": { "en": "Apply or remove text highlighting." },
+        "icon": "highlighter",
+        "tooltip": { "en": "Toggle highlight" },
+        "type": "command"
+    },
+    {
+        "id": "toggle-inline-math",
+        "commandId": "editor:toggle-inline-math",
+        "description": { "en": "Apply or remove inline math formatting." },
+        "icon": "sigma",
+        "tooltip": { "en": "Toggle inline math" },
+        "type": "command"
+    },
+    {
+        "id": "toggle-italics",
+        "commandId": "editor:toggle-italics",
+        "description": { "en": "Apply or remove italic formatting." },
+        "icon": "italic",
+        "tooltip": { "en": "Toggle italics" },
+        "type": "command"
+    },
+    {
+        "id": "toggle-numbered-list",
+        "commandId": "editor:toggle-numbered-list",
+        "description": { "en": "Apply or remove numbered list formatting." },
+        "icon": "list-ordered",
+        "tooltip": { "en": "Toggle numbered list" },
+        "type": "command"
+    },
+    {
+        "id": "toggle-strikethrough",
+        "commandId": "editor:toggle-strikethrough",
+        "description": { "en": "Apply or remove strikethrough formatting." },
+        "icon": "strikethrough",
+        "tooltip": { "en": "Toggle strikethrough" },
+        "type": "command"
     },
     {
         "id": "undo",

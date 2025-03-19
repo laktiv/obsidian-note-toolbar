@@ -37,6 +37,7 @@ export const tdocs = i18next.getFixedT(null, 'plugin-note-toolbar-docs', null); 
 
 export const COMMAND_PREFIX_TBAR = 'open-toolbar-';
 export const COMMAND_PREFIX_ITEM = 'use-toolbar-item-';
+export const VIEW_TYPE_GALLERY = 'ntb-gallery-view';
 export const VIEW_TYPE_WHATS_NEW = 'ntb-whats-new-view';
 
 export const EMPTY_TOOLBAR_ID = 'EMPTY_TOOLBAR';
@@ -355,6 +356,22 @@ export interface ToolbarItemSettings {
 	scriptConfig?: ScriptConfig;
 	tooltip: string;
 	visibility: Visibility;
+}
+
+export const DEFAULT_ITEM_SETTINGS = {
+	uuid: '',
+	label: '',
+	hasCommand: false,
+	icon: '',
+	inGallery: false,
+	link: '',
+	linkAttr: {
+		commandId: '',
+		hasVars: false,
+		type: ItemType.Command
+	},
+	tooltip: '',
+	visibility: { ...DEFAULT_ITEM_VISIBILITY_SETTINGS },
 }
 
 export const ITEM_GALLERY_DIVIDER: ToolbarItemSettings = {
