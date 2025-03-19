@@ -107,7 +107,7 @@
         "name-toggle-properties": "Перемкнути властивості",
         "name-toolbar-settings": "Редагувати панель",
         "name-toolbar-suggester": "Швидкий доступ до Змінити панель",
-        "name-use-item": "Виконати елемент {{item}}"
+        "name-use-item": "Виконати: {{item}}"
     },
     "export": {
         "button-copy-link": "Копіювати посилання",
@@ -126,7 +126,11 @@
         "warning-share-menu": "Ця панель посилається принаймні на одну іншу панель, яку одержувач не отримає."
             },
     "gallery": {
-        "label-plugin": "Використовує додаток: 🧩 {{plugin}}"
+        "label-plugin": "Використовує додаток: 🧩 {{plugin}}",
+        "label-suggestions": "ПРОПОЗИЦІЇ З ГАЛЕРЕЇ",
+        "select-plugin-placeholder": "Оберіть додаток для використання...",
+        "select-plugin-suggestion": "{{plugin}}",
+        "select-plugin-suggestion-not-enabled": "{{plugin}} ⚠️ Не ввімкнен, або не встановлен"
     },
     "import": {
         "button-add-items": "Додати елементи",
@@ -175,7 +179,12 @@
         "swap-toolbar-title": "Ця нотатка буде змінена"
     },
     "plugin": {
-        "name": "Note Toolbar"
+        "daily-notes": "Щоденні\u00A0нотатки",
+        "dataview": "Dataview",
+        "js-engine": "JS\u00A0Engine",
+        "note-toolbar": "Note\u00A0Toolbar",
+        "sync": "Синхронізація",
+        "templater-obsidian": "Templater"
     },
     "setting": {
         "button-cancel": "Скасувати",
@@ -214,7 +223,7 @@
             "description": "Цю дію не можна скасувати.",
             "label-delete-confirm": "Дійсно бажаєте видалити цю панель?",
             "name": "Видалення панелі",
-            "title": "Видалення: {{toolbar}}"
+            "title": "Видалення панелі: {{toolbar}}"
         },
         "display-contexts": {
             "description": "Увімкнути панель у полотнах, новому вигляді вкладки та інших типах файлів.",
@@ -272,6 +281,8 @@
             "placeholder": "Введіть назву іконки..."
         },
         "item": {
+            "button-close": "Закрити",
+            "button-close-description": "Закриває і зберігає цей елемент", 
             "button-duplicate-tooltip": "Дублювати елемент",
             "button-icon-tooltip": "Обрати іконку (за бажанням)",
             "label-preview-edit": "Редагувати панель: {{toolbar}}",
