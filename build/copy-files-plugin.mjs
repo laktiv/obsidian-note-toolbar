@@ -6,7 +6,7 @@ const vaults = [
   'D:/Obsidian/Dataview',
   'D:/Obsidian/dev-vault',
   'C:/Users/Laktionov.I/OneDrive/Apps/Obsidian/CV',
-  'C:/Users/Laktionov.I/OneDrive/Apps/Obsidian/Wine'
+  'C:/Users/Laktionov.I/OneDrive/Apps/remotely-save/Wine'
 ];
 const files = [
   'main.js',
