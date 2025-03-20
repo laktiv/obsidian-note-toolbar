@@ -33,17 +33,17 @@
             "function-invalid": "Unsupported function: {{function}}",
             "function-not-found": "Function not found: {{function}}",
             "function-note-not-open": "This function must be executed from an open note.",
-            "plugin-disabled": "Toggle the Scripting setting after installing and enabling plugin: ",
-            "plugin-not-installed": "Plugin not installed and enabled.",
+            "plugin-disabled": "Plugin not installed and enabled: ",
+            "plugin-not-installed": "This item uses a plugin that is not installed and enabled.",
             "query-failed": "Failed to evaluate query: {{expression}}",
             "query-note-not-open": "This query must be run from an open note.",
             "scripting-disabled": "Enable Scripting in Note Toolbar settings to use this item."
         },
         "js-engine": {
-            "eval-function": "Evaluate JavaScript",
             "eval-expr": "JavaScript expression",
             "eval-expr-description": "JavaScript expression to evaluate.",
             "eval-expr-error-required": "Error: A JavaScript expression is required",
+            "eval-function": "Evaluate JavaScript",
             "exec-function": "Execute JavaScript",
             "exec-sourcefile": "JavaScript file",
             "exec-sourcefile-description": "JavaScript file to execute.",
@@ -130,7 +130,9 @@
         "label-suggestions": "SUGGESTIONS FROM ITEM GALLERY",
         "select-plugin-placeholder": "Select plugin to use...",
         "select-plugin-suggestion": "{{plugin}}",
-        "select-plugin-suggestion-not-enabled": "{{plugin}} ⚠️ Not enabled or installed"
+        "select-plugin-suggestion-not-enabled": "{{plugin}} ⚠️ Not enabled or installed",
+        "title": "Note Toolbar Gallery",
+        "tooltip-add-item": "Add to a toolbar: {{name}}"
     },
     "import": {
         "button-add-items": "Add items",
@@ -192,6 +194,8 @@
         "button-delete-tooltip": "Delete",
         "button-drag-tooltip": "Drag to rearrange",
         "button-expand-tooltip": "Expand section",
+        "button-gallery": "Gallery",
+        "button-gallery-tooltip": "Open the Gallery",
         "button-help": "Help",
         "button-help-tooltip": "Open the help window",
         "button-learn-more": "Learn\u00A0more",
@@ -254,7 +258,7 @@
             "button-open-github": "Open github.com",
             "button-open-google": "Open google.com",
             "button-read": "Read ↗",
-            "description": "Create context-aware toolbars for your notes.",
+            "description": "Context-aware toolbars for your notes.",
             "label-article-1": "Creating toolbar items",
             "label-article-1-description": "Learn about the different types of items.",
             "label-article-2": "Note Toolbar Callouts",
@@ -263,10 +267,10 @@
             "label-bug-description": "Found a problem? Please log an issue in GitHub, or complete this Google form.",
             "label-donate": "Buy me a coffee",
             "label-donate-description": "If you find this plugin useful, and wish to support me financially, consider donating. Thank you!",
-            "label-examples": "See examples",
-            "label-examples-description": "Get inspired by these ready-to-go toolbar examples.",
             "label-feedback": "Provide feedback",
-            "label-feedback-description": "Use this Google form for any feedback, questions, or ideas you may have.",
+            "label-feedback-description": "Use this quick Google form for any feedback, questions, or ideas you may have.",
+            "label-gallery": "Open Gallery",
+            "label-gallery-description": "Visit the Gallery for ready-to-use items to your toolbars.",
             "label-support": "Get support",
             "label-support-description": "Visit the forums on GitHub to ask questions to the community.",
             "label-user-guide": "Read the User Guide",
@@ -282,7 +286,7 @@
         },
         "item": {
             "button-close": "Close",
-            "button-close-description": "Closes and saves this item",            
+            "button-close-description": "Closes and saves this item",
             "button-duplicate-tooltip": "Duplicate this item",
             "button-icon-tooltip": "Select icon (optional)",
             "label-preview-edit": "Edit toolbar: {{toolbar}}",
@@ -337,6 +341,9 @@
             "key-dismiss": "esc",
             "key-navigate": "↑↓",
             "key-use": "↵",
+            "label-empty-no-items": "No results found.",
+            "link-gallery": "Explore the gallery",
+            "link-search": "Search for an item",
             "option-default": "Default (use toolbar mapping)",
             "placeholder": "Search for an item...",
             "placeholder-toolbar": "{{toolbar}}: Search items..."
@@ -503,7 +510,7 @@
             "notice-command-removed": "Command removed:\n{{command}}",
             "notice-command-removed_empty": "Command removed for item",
             "notice-command-updated": "Command updated:\n{{command}}",
-            "tooltip-command-incidator": "Has command: {{command}}"
+            "tooltip-command-incidator": "Use with command:\n{{command}}"
         },
         "whats-new": {
             "button-read": "Read ↗",

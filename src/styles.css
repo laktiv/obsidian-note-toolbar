@@ -1014,10 +1014,11 @@ body:not(.is-mobile):not(.is-focused), .workspace-leaf:not(.mod-active) {
 }
 
 .note-toolbar-setting-empty-message {
-    color: var(--text-muted);
-    height: var(--input-height);
-    display: flex;
     align-items: center;
+    color: var(--text-muted);
+    display: flex;
+    font-style: italic;
+    height: var(--input-height);
     padding-bottom: 1em;
     .note-toolbar-setting-item-styles & {
         padding-bottom: 0;    
@@ -1351,9 +1352,7 @@ input[type="text"].note-toolbar-setting-error,
     overflow-x: auto;
     position: relative;
     scroll-behavior: smooth;
-    &:not(:last-child) {
-        border-block-end: solid 1px var(--background-modifier-border);
-    }
+    border-block-end: solid 1px var(--background-modifier-border);
 }
 
 .note-toolbar-gallery-view-plugin-note {
@@ -1391,6 +1390,17 @@ input[type="text"].note-toolbar-setting-error,
     }
     &:hover {
         background-color: var(--background-modifier-border-focus);
+    }
+    & .note-toolbar-gallery-view-item-add {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        color: var(--interactive-accent);
+        cursor: pointer;
+        & svg {
+            height: 24px;        
+            width: 24px;
+        }
     }
     & .note-toolbar-gallery-view-item-icon {
         align-items: center;

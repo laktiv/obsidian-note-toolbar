@@ -59,6 +59,7 @@ export default class ToolbarSettingsModal extends Modal {
 	 * Displays the toolbar item's settings within the modal window.
 	 */
 	onOpen() {
+		this.plugin.updateAdapters();
 		this.display();
 	}
 
@@ -264,10 +265,16 @@ export default class ToolbarSettingsModal extends Modal {
 		if (this.toolbar.items.length === 0) {
 
 			// display empty state
-			let emptyMsg = this.containerEl.createEl("div", 
-				{ text: emptyMessageFr(t('setting.items.label-empty-no-items')) });
-			emptyMsg.className = "note-toolbar-setting-empty-message";
-			itemsSortableContainer.append(emptyMsg);
+			const emptyMsgEl = this.containerEl.createEl('div', 
+				{ text: emptyMessageFr(t('setting.items.label-empty-no-items') + ' ') });
+			emptyMsgEl.addClass('note-toolbar-setting-empty-message');
+
+			const galleryLinkEl = emptyMsgEl.createEl('a', { href: '#', text: t('setting.item-suggest-modal.link-search') });
+            galleryLinkEl.addClass('note-toolbar-setting-focussable-link');
+			this.plugin.registerDomEvent(galleryLinkEl, 'click', (event) => this.openItemSuggester());
+			handleKeyClick(this.plugin, galleryLinkEl);
+
+			itemsSortableContainer.append(emptyMsgEl);
 
 		}
 		else {
@@ -372,19 +379,7 @@ export default class ToolbarSettingsModal extends Modal {
 		new Setting(itemsListButtonContainer)
 			.addButton((btn) => {
 				btn.setTooltip(t('setting.items.button-find-item-tooltip'))
-					.onClick(async () => {
-						const modal = new ItemSuggestModal(this.plugin, undefined, async (selectedItem: ToolbarItemSettings) => {
-							let newItem = await this.plugin.settingsManager.duplicateToolbarItem(this.toolbar, selectedItem);
-							if (newItem.linkAttr.type === ItemType.Plugin) {
-								const pluginType = await this.resolvePluginType(newItem);
-								if (!pluginType) return;
-							}
-							this.toolbar.updated = new Date().toISOString();
-							await this.plugin.settingsManager.save();
-							this.display();
-						});
-						modal.open();
-					});
+					.onClick(async () => this.openItemSuggester());
 				btn.buttonEl.setText(iconTextFr('zoom-in', t('setting.items.button-find-item')));
 			})
 			.addButton((btn) => {
@@ -430,6 +425,23 @@ export default class ToolbarSettingsModal extends Modal {
 			}
 		});
 
+	}
+
+	/**
+	 * Opens an item suggester that adds the selected item to this toolbar.
+	 */
+	private openItemSuggester() {
+		const modal = new ItemSuggestModal(this.plugin, undefined, async (selectedItem: ToolbarItemSettings) => {
+			let newItem = await this.plugin.settingsManager.duplicateToolbarItem(this.toolbar, selectedItem);
+			if (newItem.linkAttr.type === ItemType.Plugin) {
+				const pluginType = await this.plugin.settingsManager.resolvePluginType(newItem);
+				if (!pluginType) return;
+			}
+			this.toolbar.updated = new Date().toISOString();
+			await this.plugin.settingsManager.save();
+			this.display();
+		});
+		modal.open();
 	}
 
 	/**
@@ -1119,72 +1131,6 @@ export default class ToolbarSettingsModal extends Modal {
 			SettingFieldItemMap[toolbarItem.linkAttr.type], 
 			itemPreview,
 			toolbarItem);
-
-	}
-
-	/**
-	 * Transforms "plugin" type items from the Gallery into types that can be handled by the toolbar.
-	 * Prompts user if there's more than one enabled plugin available.
-	 * Reports errors if the plugin's not supported, chosen plugin's not enabled, or the proper parameters aren't provided.
-	 * @param item ToolbarItemSettings to update
-	 * @returns a supported ItemType, or undefined
-	 */
-	async resolvePluginType(item: ToolbarItemSettings): Promise<ItemType | undefined> {
-
-		let pluginType: ItemType | undefined;
-
-		if (item.plugin && item.scriptConfig?.expression) {
-			const plugins = Array.isArray(item.plugin) ? item.plugin : [item.plugin];
-			
-			if (plugins.length === 1) {
-				pluginType = plugins[0] as ItemType;
-			}
-			else {
-				const pluginNames = plugins.map(p => {
-					const name = t(`plugin.${p}`);
-					if (!name) return; // ignore plugins that aren't supported
-					const isEnabled = !!this.plugin.getAdapterForItemType(p as ItemType);
-					return isEnabled 
-						? t('gallery.select-plugin-suggestion', { plugin: name }) 
-						: t('gallery.select-plugin-suggestion-not-enabled', { plugin: name });
-				});
-				pluginType = await this.plugin.api.suggester(pluginNames, plugins, {
-					class: 'note-toolbar-setting-mini-dialog',
-					placeholder: t('gallery.select-plugin-placeholder')
-				});
-				if (!pluginType) {
-					return undefined;
-				}
-			}
-
-			if (pluginType) {
-				item.linkAttr.type = pluginType;
-				if (item.scriptConfig) {
-					// set appropriate plugin function to execute the script
-					switch (item.linkAttr.type) {
-						case ItemType.Dataview:
-							item.scriptConfig.pluginFunction = 'executeJs';
-							break;
-						case ItemType.JsEngine:
-							item.scriptConfig.pluginFunction = 'evaluate';
-							break;
-						case ItemType.Templater:
-							item.scriptConfig.pluginFunction = 'parseTemplate';
-							break;
-					}
-				}
-			}
-			else {
-				console.error("Invalid plugin or none enabled.");
-				return undefined;
-			}
-		}
-		else {
-			console.error("Missing plugin or script element in Gallery data.");
-			return undefined;
-		}
-
-		return pluginType;
 
 	}
 

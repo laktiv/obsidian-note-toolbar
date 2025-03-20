@@ -1,9 +1,10 @@
 import NoteToolbarPlugin from 'main';
-import { ItemView, MarkdownRenderer, setIcon, setTooltip, WorkspaceLeaf } from 'obsidian';
+import { ButtonComponent, ItemView, MarkdownRenderer, Platform, setIcon, Setting, setTooltip, WorkspaceLeaf } from 'obsidian';
 import gallery from 'Gallery/gallery.json';
-import { t, VIEW_TYPE_GALLERY } from 'Settings/NoteToolbarSettings';
-import { getPluginNames, handleKeyClick } from 'Settings/UI/Utils/SettingsUIUtils';
+import { ItemType, t, ToolbarSettings, URL_FEEDBACK_FORM, VIEW_TYPE_GALLERY } from 'Settings/NoteToolbarSettings';
+import { getPluginNames, iconTextFr } from 'Settings/UI/Utils/SettingsUIUtils';
 import { debugLog } from 'Utils/Utils';
+import { ToolbarSuggestModal } from 'Settings/UI/Modals/ToolbarSuggestModal';
 
 interface Category {
 	name: { [key: string]: string };
@@ -32,14 +33,15 @@ export class GalleryView extends ItemView {
     }
 
     getDisplayText(): string {
-        return "Note Toolbar Gallery";
+        return t('gallery.title');
     }
 
     getIcon(): string {
-        return 'images';
+        return 'layout-grid';
     }
 
     async onOpen() {
+
         let contentDiv = this.contentEl.createDiv();
         contentDiv.addClass('note-toolbar-setting-whatsnew-view');
 
@@ -79,9 +81,9 @@ export class GalleryView extends ItemView {
 				if (galleryItem) {
 
 					const itemEl = itemsEl.createEl('button');
+					itemEl.id = galleryItem.uuid;
 					itemEl.addClass('note-toolbar-gallery-view-item');
-					// TODO: localize this
-					setTooltip(itemEl, "Add to a toolbar: " + galleryItem.tooltip);
+					setTooltip(itemEl, t('gallery.tooltip-add-item', { name: galleryItem.tooltip }));
 
 					itemEl.createEl('h3').setText(galleryItem.tooltip);
 					if (galleryItem.description) {
@@ -102,15 +104,55 @@ export class GalleryView extends ItemView {
 					iconEl.addClass('note-toolbar-gallery-view-item-icon');
 					setIcon(iconEl, galleryItem.icon);
 
-					this.plugin.registerDomEvent(itemEl, 'click', (evt) => {
-						// TODO: put higher level; handle clicks on items by adding their IDs
-						debugLog('asdf');
-					});
+					// add indicator on mobile, since there's no tooltips
+					if (Platform.isMobile) {
+						const mobileAddEl = itemEl.createSpan();
+						mobileAddEl.addClass('note-toolbar-gallery-view-item-add');
+						setIcon(mobileAddEl, 'circle-plus');
+					}
 				}
 
 			});
 
 		});
+
+		// on clicking an item, prompt for toolbar and add it
+		this.plugin.registerDomEvent(markdownEl, 'click', (evt) => {
+			const galleryItemEl = (evt.target as HTMLElement).closest('.note-toolbar-gallery-view-item');
+			if (galleryItemEl && galleryItemEl.id) {
+				const toolbarModal = new ToolbarSuggestModal(this.plugin, true, false, async (selectedToolbar: ToolbarSettings) => {
+					if (selectedToolbar) {
+						const galleryItem = galleryItems.find(item => item.uuid.includes(galleryItemEl.id));
+						if (galleryItem) {
+							let newItem = await this.plugin.settingsManager.duplicateToolbarItem(selectedToolbar, galleryItem);
+							if (newItem.linkAttr.type === ItemType.Plugin) {
+								const pluginType = await this.plugin.settingsManager.resolvePluginType(newItem);
+								if (!pluginType) return;
+							}
+							selectedToolbar.updated = new Date().toISOString();
+							await this.plugin.settingsManager.save();
+							this.plugin.commands.openToolbarSettingsForId(selectedToolbar.uuid);
+						}
+					}
+				});
+				toolbarModal.open();
+			}
+		});
+
+		let feedbackEl = markdownEl.createDiv();
+		feedbackEl.addClass('note-toolbar-setting-whatsnew-cta', 'is-readable-line-width');
+		new Setting(feedbackEl)
+			.setName(iconTextFr('pen-box', t('setting.help.label-feedback')))
+			.setDesc(t('setting.help.label-feedback-description'))
+			.addButton((button: ButtonComponent) => {
+				button
+					.setButtonText(t('setting.help.label-feedback'))
+					.setTooltip(t('setting.help.button-open-google'))
+					.setCta()
+					.onClick(() => {
+						window.open(URL_FEEDBACK_FORM, '_blank');
+					});
+			});
 
     }
 
