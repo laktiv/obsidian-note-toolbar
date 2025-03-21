@@ -40,10 +40,10 @@
             "scripting-disabled": "Для використання цього елемента увімкніть виконування Скриптів у налаштуванні Note Toolbar."
         },
         "js-engine": {
-            "eval-function": "Перевірка JavaScript",
             "eval-expr": "JavaScript вираз",
             "eval-expr-description": "JavaScript вираз для перевірки.",
             "eval-expr-error-required": "⚠️ Помилка: Потрібен вираз JavaScript",
+            "eval-function": "Перевірка JavaScript",
             "exec-function": "Виконати JavaScript",
             "exec-sourcefile": "Файл JavaScript",
             "exec-sourcefile-description": "Файл JavaScript для виконання.",
@@ -84,6 +84,9 @@
         }
     },
     "api": {
+        "item": {
+            "error-invalid-icon": "Недійсна ікона ID: {{iconId}}"
+        },
         "ui": {
             "button-submit": "Відправити",
             "error-cancelled": "Сакасований запит",
@@ -130,7 +133,9 @@
         "label-suggestions": "ПРОПОЗИЦІЇ З ГАЛЕРЕЇ",
         "select-plugin-placeholder": "Оберіть додаток для використання...",
         "select-plugin-suggestion": "{{plugin}}",
-        "select-plugin-suggestion-not-enabled": "{{plugin}} ⚠️ Не ввімкнен, або не встановлен"
+        "select-plugin-suggestion-not-enabled": "{{plugin}} ⚠️ Не ввімкнен, або не встановлен",
+        "title": "Галерея Note Toolbar",
+        "tooltip-add-item": "Додати до панелі: {{name}}"
     },
     "import": {
         "button-add-items": "Додати елементи",
@@ -192,6 +197,8 @@
         "button-delete-tooltip": "Видалити",
         "button-drag-tooltip": "Перетягніть, щоб змінити порядок",
         "button-expand-tooltip": "Розгорнути розділ",
+        "button-gallery": "Галерея",
+        "button-gallery-tooltip": "Відкрити Галерею",
         "button-help": "Довідка",
         "button-help-tooltip": "Відкрити посібник",
         "button-learn-more": "Докладніше↗",
@@ -337,6 +344,9 @@
             "key-dismiss": "esc",
             "key-navigate": "↑↓",
             "key-use": "↵",
+            "label-empty-no-items": "Нічого не знайдено.",
+            "link-gallery": "Проглянути* галерею",
+            "link-search": "Пошук елемента",
             "option-default": "За замовчуванням (використовує зісталення тек)",
             "placeholder": "Введіть назву елемента...",
             "placeholder-toolbar": "{{toolbar}}: Пошук елемента..."
