@@ -2,6 +2,7 @@ import { TFile } from "obsidian";
 import { Callback } from "./NoteToolbarApi";
 import { Toolbar } from "./Toolbar";
 import { IToolbar } from "./IToolbar";
+import { IItem } from "./IItem";
 
 /**
  * The first Note Toolbar APIs allow you basic toolbar access, and to show UI (suggesters, prompts, and modals). The latter enables Dataview JS, JS Engine, or Templater scripts to ask for information, or to show helpful text.
@@ -31,6 +32,14 @@ export interface INoteToolbarApi<T> {
      * new Notice(value);
      */
     clipboard: () => Promise<string | null>;
+
+    /**
+     * Gets the active (last activated) toolbar item.
+     * 
+     * @returns The active (last activated) item.
+     * @remarks This does not work with Note Toolbar Callouts.
+     */
+    getActiveItem: () => IItem | undefined;
 
     /**
      * Gets all toolbars.

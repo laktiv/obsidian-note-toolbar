@@ -6,6 +6,8 @@ import { INoteToolbarApi, NtbModalOptions, NtbPromptOptions, NtbSuggesterOptions
 import { NtbModal } from "./NtbModal";
 import { TFile } from "obsidian";
 import { Toolbar } from "./Toolbar";
+import { Item } from "./Item";
+import { debugLog } from "Utils/Utils";
 
 export type Callback = (arg: string) => void;
 
@@ -28,12 +30,24 @@ export class NoteToolbarApi<T> implements INoteToolbarApi<T> {
     }
 
     /**
+     * Gets the active item from the currently displayed toolbar.
+     * 
+     * @see INoteToolbarApi.getActiveItem
+     */
+    getActiveItem(): Item | undefined {
+        const activeItemEl = this.plugin.getActiveItemEl();
+        if (!activeItemEl) return;
+        const activeItem = this.plugin.settingsManager.getToolbarItemById(activeItemEl.id);
+        return (activeItem) ? new Item(this.plugin, activeItem) : undefined;
+    }
+
+    /**
      * Gets all toolbars (as {@link Toolbar} objects).
      * 
      * @see INoteToolbarApi.getToolbars
      */
     getToolbars(): Toolbar[] {
-        return this.plugin.settings.toolbars.map(toolbar => new Toolbar(this.plugin, toolbar.uuid));
+        return this.plugin.settings.toolbars.map(toolbar => new Toolbar(this.plugin, toolbar));
     }
 
     /**

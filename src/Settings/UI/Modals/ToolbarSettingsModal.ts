@@ -96,7 +96,7 @@ export default class ToolbarSettingsModal extends Modal {
 	/**
 	 * Displays the toolbar item's settings.
 	 */
-	public display(focusSelector?: string) {
+	public display(focusItemId?: string) {
 
 		debugLog("🟡 REDRAWING MODAL 🟡");
 
@@ -151,8 +151,9 @@ export default class ToolbarSettingsModal extends Modal {
 			this.collapseItemForms(settingsDiv, rowClicked);
 		});
 
-		if (focusSelector) {
-			let focusEl = this.containerEl.querySelector(focusSelector) as HTMLElement;
+		if (focusItemId) {
+			const selector = `.note-toolbar-sortablejs-list > div[${SettingsAttr.ItemUuid}="${focusItemId}"] > .note-toolbar-setting-item-preview-container > .note-toolbar-setting-item-preview`;
+			let focusEl = this.containerEl.querySelector(selector) as HTMLElement;
 			focusEl?.focus();
 		}
 
@@ -271,7 +272,7 @@ export default class ToolbarSettingsModal extends Modal {
 
 			const galleryLinkEl = emptyMsgEl.createEl('a', { href: '#', text: t('setting.item-suggest-modal.link-search') });
             galleryLinkEl.addClass('note-toolbar-setting-focussable-link');
-			this.plugin.registerDomEvent(galleryLinkEl, 'click', (event) => this.openItemSuggester());
+			this.plugin.registerDomEvent(galleryLinkEl, 'click', (event) => this.openItemSuggestModal());
 			handleKeyClick(this.plugin, galleryLinkEl);
 
 			itemsSortableContainer.append(emptyMsgEl);
@@ -309,6 +310,7 @@ export default class ToolbarSettingsModal extends Modal {
 							currentFocussed.hasClass('sortable-handle') ? '.note-toolbar-setting-item-preview-container .sortable-handle' : '.note-toolbar-setting-item-preview';
 						const itemEls = Array.from(itemsSortableContainer.querySelectorAll<HTMLElement>(itemSelector));
 						const currentIndex = itemEls.indexOf(currentFocussed);
+						if (currentIndex === -1) return; // if focus is not on the item preview
 						switch (keyEvent.key) {
 							case 'ArrowUp':
 								if (currentIndex > 0) {
@@ -379,7 +381,7 @@ export default class ToolbarSettingsModal extends Modal {
 		new Setting(itemsListButtonContainer)
 			.addButton((btn) => {
 				btn.setTooltip(t('setting.items.button-find-item-tooltip'))
-					.onClick(async () => this.openItemSuggester());
+					.onClick(async () => this.openItemSuggestModal());
 				btn.buttonEl.setText(iconTextFr('zoom-in', t('setting.items.button-find-item')));
 			})
 			.addButton((btn) => {
@@ -430,7 +432,7 @@ export default class ToolbarSettingsModal extends Modal {
 	/**
 	 * Opens an item suggester that adds the selected item to this toolbar.
 	 */
-	private openItemSuggester() {
+	private openItemSuggestModal() {
 		const modal = new ItemSuggestModal(this.plugin, undefined, async (selectedItem: ToolbarItemSettings) => {
 			let newItem = await this.plugin.settingsManager.duplicateToolbarItem(this.toolbar, selectedItem);
 			if (newItem.linkAttr.type === ItemType.Plugin) {
@@ -580,7 +582,7 @@ export default class ToolbarSettingsModal extends Modal {
 						if (modifierPressed) {
 							const newItem = await this.plugin.settingsManager.duplicateToolbarItem(this.toolbar, toolbarItem, true);
 							this.plugin.settingsManager.save();
-							this.display(`.note-toolbar-sortablejs-list > div[${SettingsAttr.ItemUuid}="${newItem.uuid}"] > .note-toolbar-setting-item-preview-container > .note-toolbar-setting-item-preview`);
+							this.display(newItem.uuid);
 						}
 						break;
 					case "Enter":

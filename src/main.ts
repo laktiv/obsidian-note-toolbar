@@ -165,8 +165,6 @@ export default class NoteToolbarPlugin extends Plugin {
 			this.commands.setupItemCommands();
 			this.commands.setupToolbarCommands();
 
-			this.gallery.load();
-
 		});
 
 	}
@@ -1138,6 +1136,19 @@ export default class NoteToolbarPlugin extends Plugin {
 
 	}
 
+	/**
+	 * Updates an `active-item` property on the given element ID, and removes it from the rest of the items.
+	 * Used by the Note Toolbar API to expose the last activated item.
+	 * @param activeItemId UUID of the item that was clicked/tapped; provide nothing to remove all.
+	 */
+	updateActiveToolbarItem(activeItemId?: string): void {
+		const toolbarListEl = this.getToolbarListEl();
+		if (!toolbarListEl) return;
+		toolbarListEl.querySelectorAll('li > span.external-link').forEach((itemSpanEl) => {
+			(itemSpanEl as HTMLSpanElement).toggleAttribute('data-active-item', itemSpanEl.id === activeItemId);
+		});
+	}
+
 	/*************************************************************************
 	 * HANDLERS
 	 *************************************************************************/
@@ -1151,6 +1162,10 @@ export default class NoteToolbarPlugin extends Plugin {
 
 		let target = e.target as HTMLElement | null;
 		let clickedItemEl = target?.closest('.callout[data-callout="note-toolbar"] a.external-link');
+
+		// remove any active item attributes from the main toolbar, so the API doesn't fetch the wrong item
+		// (not supported for Note Toolbar Callouts)
+		this.updateActiveToolbarItem();
 
 		if (clickedItemEl) {
 			// debugLog('calloutLinkHandler()', target, clickedItemEl);
@@ -1314,6 +1329,9 @@ export default class NoteToolbarPlugin extends Plugin {
 
 		let activeFile = this.app.workspace.getActiveFile();
 		const toolbarItem = this.settingsManager.getToolbarItemById(uuid);
+
+		// update active item attributes in the toolbar, so the API can fetch the right active item
+		this.updateActiveToolbarItem(uuid);
 
 		if (this.hasVars(linkHref)) {
 			// TODO: expand to also replace vars in labels + tooltips
@@ -1917,6 +1935,16 @@ export default class NoteToolbarPlugin extends Plugin {
 	/*************************************************************************
 	 * ELEMENT GETTERS
 	 *************************************************************************/
+
+	/**
+	 * Gets the active (last activated) item's element.
+	 * @returns last activated toolbar item element, or null if it can't be found.
+	 */
+	getActiveItemEl(): HTMLElement | null {
+		const toolbarListEl = this.getToolbarListEl();
+		if (!toolbarListEl) return null;
+		return toolbarListEl.querySelector('span.external-link[data-active-item]') as HTMLElement | null;
+	}
 
 	/**
 	 * Gets the Properties container in the current view.

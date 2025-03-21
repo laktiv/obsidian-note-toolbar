@@ -11,42 +11,49 @@
         ]
       },
       {
-        "name": { "en" :"Basic Actions" },
+        "name": { "en" : "Basic Actions" },
         "description": { "en": "For quick text editing and history control." },
         "itemIds": [
             "copy", "cut", "paste", "undo", "redo", "clear-formatting"
         ]
       },
       {
-        "name": { "en" :"Text Formatting" },
+        "name": { "en" : "Text Formatting" },
         "description": { "en": "Change how text looks." },
         "itemIds": [
             "toggle-bold", "toggle-italics", "toggle-strikethrough", "toggle-code", "toggle-blockquote", "toggle-highlight"
         ]
       },
       {
-        "name": { "en" :"Lists & Indentation" },
+        "name": { "en" : "Lists & Indentation" },
         "description": { "en": "Organize items into lists and adjust structure." },
         "itemIds": [
             "toggle-bullet-list", "toggle-checklist-status", "toggle-numbered-list", "indent", "unindent", "cycle-list-checklist"
         ]
       },
       {
-        "name": { "en" :"Insertions" },
+        "name": { "en" : "Insertions" },
         "description": { "en": "Add various types of content like links or media." },
         "itemIds": [
             "insert-codeblock", "insert-callout", "insert-link", "insert-tag", "insert-horizontal-rule", "insert-wikilink", "insert-table", "insert-embed", "attach-file", "insert-mathblock"
         ]
       },
       {
-        "name": { "en" :"Line Actions" },
-        "description": { "en": "Adjust the order and arrangement of content." },
+        "name": { "en" : "Editor" },
+        "description": { "en": "Get around the text editor faster." },
         "itemIds": [
-            "swap-line-up", "swap-line-down", "toggle-comments", "toggle-inline-math"
+            "go-next-heading", "go-prev-heading", "go-bottom", "toggle-vim-mode"
         ]
       },
       {
-        "name": { "en": "Navigation" },
+        "name": { "en" : "Line Actions" },
+        "description": { "en": "Adjust the order and arrangement of content." },
+        "itemIds": [
+            "swap-line-up", "swap-line-down", "toggle-comments", "toggle-inline-math", "copy-block-link"
+        ]
+      },
+      {
+        "name": { "en": "Vault Navigation" },
         "description": { "en": "Navigate between files and directories." },
         "itemIds": [
             "previous-file", "next-file", "go-home", "go-up", "bookmarks-open"
@@ -63,7 +70,7 @@
         "name": { "en": "Obsidian Support" },
         "description": { "en": "Get help from Obsidian community resources." },
         "itemIds": [
-            "obsidian-discord", "obsidian-forum", "obsidian-help-site", "obsidian-markdown-reference", "obsidian-subreddit"
+            "obsidian-help-site", "obsidian-markdown-reference", "obsidian-discord", "obsidian-forum", "obsidian-subreddit"
         ]
       },
       {
@@ -75,7 +82,7 @@
       },
       {
         "name": { "en": "Search" },
-        "description": { "en": "Search notes." },
+        "description": { "en": "Search in notes and across your vault." },
         "itemIds": [
             "search-replace-open", "global-search-open"
         ]
@@ -84,7 +91,7 @@
         "name": { "en": "Themes and Views" },
         "description": { "en": "Switch themes and toggle views." },
         "itemIds": [
-            "theme-switch", "theme-use-dark", "theme-use-light", "editor-toggle-preview", "editor-toggle-source"
+            "theme-switch", "theme-toggle-light-dark", "cycle-themes", "editor-toggle-preview", "editor-toggle-source"
         ]
       },
       {

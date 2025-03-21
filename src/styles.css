@@ -1344,27 +1344,68 @@ input[type="text"].note-toolbar-setting-error,
     margin-bottom: 0.5em;
 }
 
-.note-toolbar-gallery-view-items-container {
-    align-items: stretch;
-    padding-bottom: 1em;
-    display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    position: relative;
-    scroll-behavior: smooth;
-    border-block-end: solid 1px var(--background-modifier-border);
-}
-
-.note-toolbar-gallery-view-plugin-note {
-    display: flex;
-    gap: 0.5em;
-    & p {
-        margin: 0;
+.note-toolbar-gallery-view-search {
+    padding-top: 0;
+    & .setting-item-info {
+        display: none;
+    }
+    & .setting-item-control {
+        justify-content: flex-start;
+        & input[type='search']:focus-visible {
+            box-shadow: inset 0px 0px 0 2px var(--background-modifier-border-focus);
+        }
     }
 }
 
+.note-toolbar-gallery-view-items-container {
+    align-items: stretch;
+    border-block-end: solid 1px var(--background-modifier-border);
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 2em;
+    padding-top: 1em;
+    position: relative;
+    scroll-behavior: smooth;
+}
+
+.note-toolbar-gallery-view-heading {
+    display: flex;
+    flex-basis: fit-content;
+    justify-content: space-between;
+    vertical-align: top;
+    & h1 {
+        margin-block-start: 0;
+    }
+    .is-phone & {
+        flex-direction: column;
+        & h1 {
+            margin-block-end: 0;
+        }
+        & .setting-item {
+            padding-top: 0;
+        }
+    }
+}
+
+.note-toolbar-gallery-view-cat-title {
+    & h2 {
+        margin-block-end: 0.25em;
+        &::after {
+            display: none; /* fix for Border theme */
+        }
+    } 
+}
+
+.note-toolbar-gallery-view-plugin-note,
 .note-toolbar-gallery-view-cat-description {
-    color: var(--text-muted);
+    display: flex;
+    gap: 0.5em;
+    & p {
+        color: var(--text-muted);
+        font-size: var(--font-smaller);
+        margin-block-start: 0;
+    }
 }
 
 .note-toolbar-gallery-view-item {
@@ -1424,12 +1465,15 @@ input[type="text"].note-toolbar-setting-error,
         text-overflow: ellipsis;
         white-space: nowrap;
         width: 100%;
+        &::after {
+            display: none; /* fix for Border theme */
+        }
     }
     & p {
         align-self: start;
         display: flex;
         font-size: var(--font-ui-small);
-        margin: 0;
+        margin: 0 !important;
         text-wrap: auto;
         &.note-toolbar-gallery-view-item-description {
             color: var(--text-muted);
@@ -1438,7 +1482,7 @@ input[type="text"].note-toolbar-setting-error,
             display: flex;
             vertical-align: middle;
             gap: 0.25em;
-            margin-top: 0.5em;
+            margin-top: 0.5em !important;
             & svg {
                 height: var(--font-ui-small);
                 width: var(--font-ui-small);
